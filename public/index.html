@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>锐力体育管理系统</title>
+<link rel="icon" href="/icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="锐力体育">
+<style>
+
+:root{--p:#1d4ed8;--pl:#3b82f6;--pb:#eff6ff;--ok:#16a34a;--ob:#f0fdf4;--no:#dc2626;--nb:#fef2f2;--wn:#ea580c;--wb:#fff7ed;--g50:#f5f5f7;--g100:#e8e8ed;--g200:#d2d2d7;--g300:#b0b0b6;--g400:#86868b;--g500:#6e6e73;--g600:#48484a;--g700:#363638;--g800:#1d1d1f;--g900:#0a0a0a;--r:14px;--sh:0 1px 3px rgba(0,0,0,.04);--tc:#0d6efd;--tcb:#dbeafe;--adv:#7c3aed;--advb:#f5f3ff;--mg:#92400e;--mgb:#fef3c7}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Heiti SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif;background:var(--g50);color:var(--g800);min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:-.01em}
+/* Landing */
+.landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f8f8f8;padding:24px}
+.landing-logo{font-size:28px;font-weight:800;color:#1d1d1f;letter-spacing:.04em;margin-bottom:4px}
+.landing-sub{font-size:13px;color:#888;margin-bottom:28px;letter-spacing:.06em}
+.landing-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:720px}
+.lc{background:#fff;border-radius:16px;padding:24px 22px;width:210px;cursor:pointer;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;align-items:flex-start;gap:14px}
+.lc:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.lc:active{transform:translateY(0)}
+.c1 .c2 .c3 .c4 
+.c1 .c2 .c3 .lc-body{min-width:0}
+.lc h3{font-size:16px;font-weight:700;color:#1d1d1f;letter-spacing:.02em;margin-bottom:3px}
+.lc p{font-size:11px;color:#999;line-height:1.4}
+
+.page{display:none;min-height:100vh}.page.active{display:block}
+.hleft{display:flex;align-items:center;gap:10px}
+.bbtn{width:32px;height:32px;border-radius:8px;border:1px solid var(--g200);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--g600)}
+.bbtn:active{background:var(--g100)}.htitle{font-size:16px;font-weight:600}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.badge-c{background:var(--pb);color:var(--p)}.badge-p{background:var(--ob);color:var(--ok)}.badge-m{background:var(--mgb);color:var(--mg)}
+.ctn{max-width:600px;margin:0 auto;padding:14px 14px 80px}
+.login-box{max-width:360px;margin:40px auto;background:#fff;border-radius:18px;padding:32px 26px;box-shadow:0 8px 30px rgba(0,0,0,.06)}
+.login-box h2{font-size:18px;text-align:center;font-weight:700;color:var(--g900)}.login-sub{text-align:center;color:var(--g500);font-size:12px;margin-bottom:22px}
+.fg{margin-bottom:14px}.fg label{display:block;font-size:12px;font-weight:500;color:var(--g700);margin-bottom:4px}
+.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;border:1px solid var(--g200);border-radius:10px;font-size:15px;outline:none;background:#fff;transition:border .2s,box-shadow .2s;height:44px;letter-spacing:0}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(29,78,216,.12)}
+.fg textarea{resize:vertical;min-height:56px;height:auto}
+.fg .hint{font-size:11px;color:var(--g400);margin-top:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 20px;border-radius:10px;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:all .2s;width:100%;gap:6px;letter-spacing:0}
+.btn:active{transform:scale(.97)}.btn-p{background:var(--p);color:#fff}.btn-p:disabled{background:var(--g300);cursor:not-allowed;transform:none}
+.btn-ok{background:var(--ok);color:#fff}.btn-no{background:var(--no);color:#fff}
+.btn-o{background:#fff;color:var(--g700);border:1.5px solid var(--g200)}
+.btn-sm{padding:7px 12px;font-size:12px;width:auto;border-radius:7px}
+.btn-mg{background:var(--mg);color:#fff}
+.card{background:#fff;border-radius:var(--r);padding:18px;box-shadow:0 .5px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.02);margin-bottom:14px}
+.stitle{font-size:15px;font-weight:600;color:var(--g800);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.sg{display:grid;gap:14px;margin-bottom:14px}.sg3{grid-template-columns:1fr 1fr 1fr}.sg2{grid-template-columns:1fr 1fr}
+.sc{background:#fff;border-radius:14px;padding:20px 14px;box-shadow:0 .5px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.02);text-align:center}
+.sc .sv{font-size:20px;font-weight:700;color:var(--g900)}.sc .sl{font-size:10px;color:var(--g500);margin-top:2px}
+.search-row{display:flex;gap:8px}.search-row input{flex:1;padding:10px 12px;border:1.5px solid var(--g200);border-radius:8px;font-size:14px;outline:none}
+.search-row input:focus{border-color:var(--p)}.search-row.ok input:focus{border-color:var(--ok)}
+.scan-btn{display:flex;align-items:center;gap:5px;padding:8px 14px;border:1.5px solid var(--p);border-radius:8px;background:var(--pb);cursor:pointer;color:var(--p);font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.scan-btn:active{background:var(--p);color:#fff}
+.scan-btn svg{width:16px;height:16px;fill:currentColor}
+.scan-btn.ok-style{border-color:var(--ok);background:var(--ob);color:var(--ok)}
+.mlist{max-height:200px;overflow-y:auto;margin-top:8px;-webkit-overflow-scrolling:touch}
+.mi{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--g100);cursor:pointer}
+.mi:last-child{border-bottom:none}.mi:active{background:var(--g50)}
+.mi .mn{font-size:14px;font-weight:500}.mi .mid{font-size:11px;color:var(--g400)}.mi .mc{font-size:13px;font-weight:600;color:var(--p)}
+.irow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:.5px solid rgba(0,0,0,.06)}.irow:last-child{border-bottom:none}
+.admin-item{padding:12px 0;border-bottom:.5px solid rgba(0,0,0,.06)}
+.admin-item:last-child{border-bottom:none}
+.admin-item-top{display:block}
+.admin-item-name{font-size:15px;font-weight:600;color:var(--g800)}
+.admin-item-stores{display:block;font-size:13px;color:var(--g500);margin-top:2px}
+.admin-item-info{font-size:13px;color:var(--g500);margin-top:2px}
+.admin-item-acts{display:flex;gap:6px;margin-top:8px}
+.stab{padding:8px 16px;border:1px solid var(--g200);background:#fff;border-radius:20px;font-size:13px;color:var(--g500);cursor:pointer;transition:all .2s}.stab.on{background:var(--p);color:#fff;border-color:var(--p)}
+.il{font-size:14px;color:var(--g500)}.iv{font-size:15px;font-weight:600;color:var(--g800)}.iv.hl{color:var(--p);font-size:20px}
+.ttag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;vertical-align:middle}
+.ttag-ck{background:var(--pb);color:var(--p)}.ttag-mk{background:var(--tcb);color:var(--tc)}.ttag-adv{background:var(--advb);color:var(--adv)}
+.act-row{display:flex;gap:8px;margin-top:8px}.act-row .btn{flex:1}
+.ri{display:flex;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--g100);gap:10px}.ri:last-child{border-bottom:none}
+.rd{width:5px;height:5px;border-radius:50%;background:var(--p);flex-shrink:0}
+.rm{flex:1;min-width:0}.rn{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rmt{font-size:11px;color:var(--g400);margin-top:1px}
+.rb{font-size:10px;padding:2px 6px;border-radius:10px;font-weight:500;white-space:nowrap}
+.rb-no{background:var(--nb);color:var(--no)}.rb-p{background:var(--pb);color:var(--p)}.rb-ok{background:var(--ob);color:var(--ok)}.rb-wn{background:var(--wb);color:var(--wn)}
+.sli{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--g100)}.sli:last-child{border-bottom:none}
+.sli-info{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.sav{width:36px;height:36px;border-radius:10px;background:var(--pb);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--p);flex-shrink:0}
+.sav.mk{background:var(--tcb);color:var(--tc)}.sav.adv{background:var(--advb);color:var(--adv)}
+.sn{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sid{font-size:11px;color:var(--g400)}
+.scls{font-size:13px;font-weight:600;color:var(--p);white-space:nowrap}
+.sexp{font-size:12px;font-weight:500;white-space:nowrap}
+.sexp.expired{color:var(--no)}.sexp.soon{color:var(--wn)}.sexp.ok{color:var(--ok)}
+.sact{display:flex;gap:3px;flex-shrink:0}
+.abtn{width:28px;height:28px;border-radius:6px;border:1px solid var(--g200);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--g600)}
+.abtn:active{background:var(--g100)}.abtn.dng:active{background:var(--nb);border-color:var(--no)}
+.abtn svg{width:13px;height:13px}
+.tabs4{display:flex;background:rgba(118,118,128,.08);border-radius:9px;padding:2px;margin-bottom:14px;gap:0}
+.tabs4 .t4{flex:1;padding:8px 2px;text-align:center;font-size:13px;font-weight:500;border:none;background:transparent;cursor:pointer;border-radius:7px;color:var(--g500);transition:all .2s;white-space:nowrap}
+.tabs4 .t4.on{background:#fff;color:var(--g800);box-shadow:0 .5px 3px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.04);font-weight:600}
+.tabs4 .t4 .t4c{font-size:10px;font-weight:400;color:var(--g400);margin-left:2px}
+.empty{text-align:center;padding:24px 0;color:var(--g400);font-size:13px}
+.tc{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:5px;pointer-events:none}
+.tst{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,.12);animation:tin .25s ease;pointer-events:auto}
+.tst.ok{background:#d4edda;color:#155724}.tst.no{background:#f8d7da;color:#721c24}.tst.wn{background:#fef3c7;color:#856404}
+@keyframes tin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.mo{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.mo.on{display:flex}
+.md{background:#fff;border-radius:18px;padding:24px 20px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.15);max-height:90vh;overflow-y:auto}
+.md h3{font-size:15px;font-weight:600;margin-bottom:14px;text-align:center}
+.md-acts{display:flex;gap:8px;margin-top:14px}.md-acts .btn{flex:1}
+.md-body{font-size:14px;color:var(--g600);line-height:1.6}
+.type-sel{display:flex;gap:6px;margin-bottom:14px}
+.type-opt{flex:1;padding:10px 6px;border:2px solid var(--g200);border-radius:10px;text-align:center;cursor:pointer;transition:all .15s;font-size:13px;font-weight:500;background:#fff}
+.type-opt:active{transform:scale(.97)}
+.type-opt.sel-ck{border-color:var(--p);background:var(--pb);color:var(--p)}
+.type-opt.sel-mk{border-color:var(--tc);background:var(--tcb);color:var(--tc)}
+.type-opt.sel-adv{border-color:var(--adv);background:var(--advb);color:var(--adv)}
+.type-opt .to-label{font-size:13px;font-weight:600}.type-opt .to-desc{font-size:10px;opacity:.7;margin-top:2px}
+.hist-btn{width:100%;padding:10px;background:var(--g100);border:1px solid var(--g200);border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--g600);display:flex;align-items:center;justify-content:center;gap:6px}
+.hist-btn:active{background:var(--g200)}.hist-btn svg{width:14px;height:14px;fill:currentColor}
+.hist-body{margin-top:10px;max-height:400px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.qr-card{text-align:center;padding:12px}
+.qr-card canvas,.qr-card img{border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.qr-card p{font-size:12px;color:var(--g500);margin-top:8px}
+.coach-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:var(--g100);border-radius:6px;font-size:12px;margin:3px}
+.coach-tag button{background:none;border:none;color:var(--no);cursor:pointer;font-size:14px;padding:0 2px}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}
+.info-cell{border-radius:12px;padding:14px 8px;text-align:center}
+.info-cell .ic-label{font-size:13px;color:rgba(0,0,0,.4);margin-bottom:5px;font-weight:500}
+.info-cell .ic-val{font-size:20px;font-weight:700;color:#1d1d1f}
+.info-cell .ic-unit{font-size:13px;color:rgba(0,0,0,.35);margin-left:2px;font-weight:400}
+.ic-body{background:#e8f0fe}
+.ic-run{background:#fef3c7}
+.ic-fit{background:#d1fae5}
+.ic-tech{background:#ede9fe}
+.ic-status{background:#fce7f3}
+.info-cell input{width:100%;background:rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.08);border-radius:6px;color:var(--g800);font-size:15px;font-weight:600;text-align:center;padding:4px 2px;outline:none}
+.info-cell input::placeholder{color:rgba(0,0,0,.25)}
+.info-cell input:focus{border-color:var(--p);background:#fff}
+.info-full{grid-column:1/-1}
+.p-header{padding:6px 0 10px;border-bottom:.5px solid rgba(0,0,0,.06);margin-bottom:6px}
+.p-header .p-name{font-size:22px;font-weight:700;color:var(--g900);letter-spacing:-.02em}
+.p-header .p-meta{font-size:13px;color:var(--g500);margin-top:3px;font-weight:400}
+
+.store-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f8f8f8;padding:24px}
+.store-title{color:#1d1d1f;font-size:20px;font-weight:700;margin-bottom:6px}
+.store-sub{color:rgba(255,255,255,.45);font-size:13px;margin-bottom:28px}
+.store-cards{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.store-card{background:#fff;border-radius:16px;padding:32px 28px;width:220px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.06)}.store-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.store-card:active{transform:scale(.97)}
+.store-card .store-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px}
+.store-card.s1 .store-icon{background:#fff;color:#1d4ed8}
+.store-card.s2 .store-icon{background:#fff;color:#16a34a}
+.store-card.s3 .store-icon{background:#fff;color:#ea580c}
+.store-card.s4 .store-icon{background:#fff;color:#9333ea}
+.store-card h3{font-size:17px;font-weight:600;color:#1d1d1f;letter-spacing:.02em;margin-bottom:4px}
+.store-card p{font-size:12px;color:#999;line-height:1.4}
+.lc-badge{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.c1 .lc-badge{background:#FFF3E0;color:#E65100}
+.c2 .lc-badge{background:#E3F2FD;color:#1565C0}
+.c3 .lc-badge{background:#F3E5F5;color:#7B1FA2}
+.c4 .lc-badge{background:#E8F5E9;color:#2E7D32}
+.ptr-indicator{position:fixed;top:0;left:0;width:100%;text-align:center;color:var(--p);font-size:13px;padding:8px 0;transition:transform .3s,opacity .3s;z-index:999;pointer-events:none;opacity:0;transform:translateY(-50px)}
+.ptr-indicator.on{opacity:1;transform:translateY(0)}
+.ptr-indicator.done{opacity:0;transform:translateY(-50px)}
+.ptr-indicator .spinner{display:inline-block;width:18px;height:18px;border:2px solid transparent;border-top-color:var(--p);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:4px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div id="ptrIndicator" class="ptr-indicator"><span class="spinner"></span>刷新中…</div>
+
+<!-- Landing -->
+<div class="page active" id="pgLand">
+  <div class="landing">
+    
+    
+    <div class="landing-logo">锐力体育</div>
+    <div class="landing-sub">学员管理系统</div>
+    <div class="landing-cards">
+      <div class="lc c1" onclick="goStoreSelect('coach')">
+        <div class="lc-badge">01</div>
+        <div class="lc-body">
+          <h3>学员管理</h3>
+          <p>学员管理 · 扣课充值</p>
+        </div>
+      </div>
+      <div class="lc c2" onclick="goStoreSelect('mgr')">
+        <div class="lc-badge">02</div>
+        <div class="lc-body">
+          <h3>业绩管理</h3>
+          <p>业绩管理 · 数据统计</p>
+        </div>
+      </div>
+      <div class="lc c3" onclick="goStoreSelect('admin')">
+        <div class="lc-badge">03</div>
+        <div class="lc-body">
+          <h3>账号管理</h3>
+          <p>教练·店长·充值记录</p>
+        </div>
+      </div>
+      <div class="lc c4" onclick="goStoreSelect('parent')">
+        <div class="lc-badge">04</div>
+        <div class="lc-body">
+          <h3>家长入口</h3>
+          <p>课时查询 · 成绩查看</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Management -->
+<div class="page" id="pgAdminLogin">
+<div class="header"><div class="hleft"><button class="bbtn" onclick="goLand()">&#8592;</button><span class="htitle">账号管理</span></div></div>
+<div class="ctn">
+  <div class="login-box" style="margin-top:20px">
+    <h2>管理员登录</h2>
+    <div class="login-sub">请输入管理密码</div>
+    <div class="fg"><label>密码</label><input id="adminPwd" type="password" autocomplete="off" placeholder="管理密码" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+    <button class="btn btn-p" onclick="doAdminLogin()">登 录</button>
+  </div>
+</div>
+</div>
+
+<div class="page" id="pgAdmin">
+<div class="header"><div class="hleft"><button class="bbtn" onclick="goLand()">&#8592;</button><span class="htitle">账号管理</span><span class="store-label" id="adminStoreLabel" style="font-size:12px;color:var(--g500);margin-left:8px"></span></div><span class="badge badge-mg">管理员</span></div>
+<div class="ctn" id="adminCtn">
+  <div class="stitle" style="color:var(--no)">待审核 <span id="adminPendingCount" style="font-size:12px;color:var(--g400);font-weight:400"></span></div>
+  <div class="card" id="adminPendingList"></div>
+
+  <div class="stitle" style="margin-top:16px">教练账号 <span id="adminCoachCount" style="font-size:12px;color:var(--g400);font-weight:400"></span></div>
+  <div class="card" id="adminCoachList"></div>
+  <button class="btn btn-o btn-sm" style="width:100%;margin-top:8px" onclick="adminShowAddCoach()">+ 添加教练</button>
+
+  <div class="stitle" style="margin-top:16px">店长账号 <span id="adminMgrCount" style="font-size:12px;color:var(--g400);font-weight:400"></span></div>
+  <div class="card" id="adminMgrList"></div>
+  <button class="btn btn-o btn-sm" style="width:100%;margin-top:8px" onclick="adminShowAddMgr()">+ 添加店长</button>
+
+  <div class="stitle" style="margin-top:16px">课程充值记录 <span id="adminRecCount" style="font-size:12px;color:var(--g400);font-weight:400"></span></div>
+  <div class="card" id="adminRecList"></div>
+</div>
+</div>
+
+<!-- Coach Edit Modal -->
+<div class="mo" id="moCoachEdit"><div class="md">
+  <h3 id="coachEditTitle">编辑教练</h3>
+  <div class="fg"><label>账号</label><input id="ceUser" placeholder="英文账号"></div>
+  <div class="fg"><label>密码</label><input id="cePwd" placeholder="登录密码"></div>
+  <div class="fg"><label>姓名</label><input id="ceName" placeholder="显示名称"></div>
+  <div class="fg" style="display:none"><label>适用门店</label>
+    <div style="display:block;padding:8px 0">
+      <label style="font-size:14px;display:flex;align-items:center;gap:4px;margin-bottom:4px"><input type="checkbox" id="ceS1" value="henglicheng" checked>恒力城</label>
+      <label style="font-size:14px;display:flex;align-items:center;gap:4px;margin-bottom:4px"><input type="checkbox" id="ceS2" value="baolong" checked>宝龙</label>
+      <label style="font-size:14px;display:flex;align-items:center;gap:4px;margin-bottom:4px"><input type="checkbox" id="ceS3" value="taihe" checked>泰禾</label>
+      <label style="font-size:14px;display:flex;align-items:center;gap:4px;margin-bottom:4px"><input type="checkbox" id="ceS4" value="yangguang" checked>阳光天地</label>
+    </div>
+  </div>
+  <div class="md-acts">
+    <button class="btn btn-o" onclick="clsMo('moCoachEdit')">取消</button>
+    <button class="btn btn-p" onclick="adminSaveCoach()">保存</button>
+  </div>
+</div></div>
+
+<!-- Manager Edit Modal -->
+<div class="mo" id="moMgrEdit"><div class="md">
+  <h3 id="mgrEditTitle">编辑店长</h3>
+  <div class="fg"><label>姓名</label><input id="meName" placeholder="店长姓名"></div>
+  <div class="fg"><label>密码</label><input id="mePwd" placeholder="登录密码"></div>
+  <div class="fg"><label>分成比例</label><input id="meShare" type="number" step="0.1" min="0" max="1" placeholder="如 0.3 表示30%" style="width:120px"></div>
+  <div class="md-acts">
+    <button class="btn btn-o" onclick="clsMo('moMgrEdit')">取消</button>
+    <button class="btn btn-p" onclick="adminSaveMgr()">保存</button>
+  </div>
+</div></div>
+
+<!-- Store Selection -->
+<div class="page" id="pgStore">
+<div class="store-page">
+<div class="store-title">选择门店</div>
+<div class="store-sub">请选择要进入的门店</div>
+<div class="store-cards"><div class="store-card s1" onclick="selectStore('henglicheng')">
+<div class="store-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+<h3>恒力城店</h3>
+<p>恒力城校区</p>
+</div><div class="store-card s3" onclick="selectStore('taihe')">
+<div class="store-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+<h3>泰禾店</h3>
+<p>泰禾校区</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Coach Login -->
+<div class="page" id="pgLogin">
+  <div class="header"><div class="hleft"><button class="bbtn" onclick="goLand()">&#8592;</button><span class="htitle">教练登录</span></div></div>
+  <div class="ctn"><div class="login-box"><h2>锐力体育</h2><div class="login-sub">教练登录</div>
+    <div class="fg"><label>账号</label><input id="lUser" placeholder="输入账号"></div>
+    <div class="fg"><label>密码</label><input id="lPwd" type="password" autocomplete="off" placeholder="输入密码"></div>
+    <button class="btn btn-p" onclick="doLogin()">登 录</button>
+  </div></div>
+</div>
+
+<!-- Coach Main -->
+<div class="page" id="pgCoach">
+  <div class="header"><div class="hleft"><button class="bbtn" onclick="doLogout()">&#8592;</button><span class="htitle">锐力体育</span></div><span class="badge badge-c" id="coachBadge"></span></div>
+  <div class="ctn">
+    <div class="sg sg3"><div class="sc"><div class="sv" id="sCk">0</div><div class="sl">次卡</div></div><div class="sc"><div class="sv" id="sMk">0</div><div class="sl">月卡</div></div><div class="sc"><div class="sv" id="sAdv">0</div><div class="sl">提高班</div></div></div>
+    <div class="card"><div class="stitle">查找学员</div><div class="search-row"><input id="cSearch" placeholder="输入学员姓名" oninput="cSearchStu()"><button class="scan-btn" onclick="openCoachScan()"><svg viewBox="0 0 24 24"><path d="M3 5h2V3H3v2zm4-2v2h2V3H7zm4 0v2h2V3h-2zm4 0v2h2V3h-2zm4 0v2h2V3h-2zM3 9h2V7H3v2zm16 0h2V7h-2v2zM3 13h2v-2H3v2zm16 0h2v-2h-2v2zM3 17h2v-2H3v2zm16 0h2v-2h-2v2zM3 21h2v-2H3v2zm4 0h2v-2H7v2zm4 0h2v-2h-2v2zm4 0h2v-2h-2v2zm4 0h2v-2h-2v2zM7 15v-2h2v2h2v-2h2v2h2v-2h2v2h-2v2h-2v-2h-2v2H9v-2H7z"/></svg>扫码</button></div><div id="cMatchList" class="mlist" style="display:none"></div></div>
+    <div class="card" id="selInfo" style="display:none">
+      <div class="irow"><span class="il">姓名</span><span class="iv" id="iName"></span></div>
+      <div class="irow"><span class="il">类型</span><span class="iv" id="iType"></span></div>
+      <div class="irow"><span class="il">编号</span><span class="iv" id="iId"></span></div>
+      <div class="irow" id="iClsRow"><span class="il">剩余课时</span><span class="iv hl" id="iCls"></span></div>
+      <div class="irow" id="iExpRow" style="display:none"><span class="il">到期日期</span><span class="iv hl" id="iExp"></span></div>
+      <div class="irow" id="iFreezeRow" style="display:none"><span class="il">冻课状态</span><span class="iv" id="iFreeze" style="color:var(--wn)"></span></div>
+      <div class="irow"><span class="il">备注</span><span class="iv" id="iNote"></span></div>
+      <div class="act-row" id="actCk"><button class="btn btn-no" id="btnDeduct" onclick="doDeduct()" disabled>扣 1 节</button><button class="btn btn-no" id="btnDeductN" onclick="showDeductNModal()" disabled style="background:#b91c1c">扣 N 节</button><button class="btn btn-ok" id="btnAdd" onclick="doAddClass()" disabled>充 1 节</button></div>
+      <div class="act-row" id="actCk2"><button class="btn btn-p btn-sm" id="btnAddN" onclick="showAddNModal()" disabled style="width:100%">充 N 节</button></div>
+      <div class="act-row" id="actMk" style="display:none"><button class="btn btn-no" id="btnDeductMk" onclick="doDeductMk()" disabled>扣 1 节</button><button class="btn btn-no" id="btnDeductMkN" onclick="showDeductMkNModal()" disabled style="background:#b91c1c">扣 N 节</button></div><div class="act-row" id="actMk2" style="display:none"><button class="btn btn-p btn-sm" id="btnRenew" onclick="showRenewModal()" disabled style="width:100%">修改到期日</button></div>
+<div class="act-row" id="actMkFreeze" style="display:none"><button class="btn btn-sm" id="btnFreeze" onclick="toggleFreeze()" style="width:100%;background:var(--wn);color:#fff">冻课</button></div>
+    </div>
+    <div class="card">
+      <div class="tabs4" id="mainTabs">
+        <button class="t4 on" onclick="swMainTab('ck',this)">次卡<span class="t4c" id="t4Ck"></span></button>
+        <button class="t4" onclick="swMainTab('mk',this)">月卡<span class="t4c" id="t4Mk"></span></button>
+        <button class="t4" onclick="swMainTab('adv',this)">提高班<span class="t4c" id="t4Adv"></span></button>
+        <button class="t4" onclick="swMainTab('add',this)">添加</button>
+      </div>
+      <div id="tabCk"><div id="ckList"></div></div>
+      <div id="tabMk" style="display:none"><div id="mkList"></div></div>
+      <div id="tabAdv" style="display:none"><div id="advList"></div></div>
+      <div id="tabAdd" style="display:none">
+        <div class="stitle" style="margin-bottom:6px">卡类型</div>
+        <div class="type-sel" id="addTypeSel">
+          <div class="type-opt sel-ck" onclick="selAddType('次卡',this)"><div class="to-label">次卡</div><div class="to-desc">按课时扣减</div></div>
+          <div class="type-opt" onclick="selAddType('月卡',this)"><div class="to-label">月卡</div><div class="to-desc">按月到期</div></div>
+          <div class="type-opt" onclick="selAddType('提高班',this)"><div class="to-label">提高班</div><div class="to-desc">月卡/课时卡</div></div>
+        </div>
+        <div id="addCkFields"><div class="fg"><label>剩余课时</label><input id="nCls" type="number" placeholder="20"></div><div class="fg"><label>总课时</label><input id="nTotalCls" type="number" placeholder="20"></div><div class="fg"><label>报名日期</label><input id="nRegDate" type="date"></div><div class="fg"><label>有效期（月）</label><select id="nValidMonths"><option value="">不设置</option><option value="1">1个月</option><option value="2">2个月</option><option value="3">3个月</option><option value="4">4个月</option><option value="5">5个月</option><option value="6">6个月</option><option value="7">7个月</option><option value="8">8个月</option><option value="9">9个月</option><option value="10">10个月</option><option value="11">11个月</option><option value="12">12个月</option></select></div></div>
+        <div id="addMkFields" style="display:none"><div class="fg"><label>到期日期</label><input id="nExp" type="date"></div></div>
+        <div id="addAdvBilling" style="display:none"><div class="stitle" style="font-size:12px;margin-bottom:6px">计费方式</div><div class="type-sel" id="advBillingSel" style="margin-bottom:10px"><div class="type-opt" style="padding:8px 12px" onclick="selAdvBilling('monthly',this)"><div class="to-label" style="font-size:13px">月卡</div><div class="to-desc" style="font-size:11px">按月到期</div></div><div class="type-opt" style="padding:8px 12px" onclick="selAdvBilling('class',this)"><div class="to-label" style="font-size:13px">课时卡</div><div class="to-desc" style="font-size:11px">按课时扣减</div></div></div></div>
+        <div class="fg"><label>姓名</label><input id="nName" placeholder="学员姓名"></div>
+        <div class="fg"><label>编号</label><input id="nId" placeholder="自动生成"><div class="hint">可自定义，默认自动递增</div></div>
+        <div class="fg"><label>备注</label><input id="nNote" placeholder="可选"></div>
+        <button class="btn btn-p" onclick="doAddStu()">添加学员</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stitle">今日操作</div><div id="cTodayRecs"></div><div id="cTodayEmpty" class="empty" style="display:none">今日暂无操作</div>
+      <button class="hist-btn" id="histBtn" onclick="toggleHist()" style="margin-top:10px;display:none"><svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>历史记录</button>
+      <div class="hist-body" id="cHistRecs" style="display:none"></div><div id="cHistEmpty" class="empty" style="display:none">暂无历史记录</div>
+    </div>
+    <div class="card"><div class="stitle">数据备份</div><p style="font-size:12px;color:var(--g500);margin-bottom:10px">导出数据备份，以防万一</p><div style="display:flex;gap:8px"><button class="btn btn-o" style="flex:1;font-size:13px" onclick="doExportJSON()">JSON</button><button class="btn btn-o" style="flex:1;font-size:13px" onclick="doExportHTML()">可读报表</button></div></div>
+  </div>
+</div>
+
+<!-- Parent -->
+<div class="page" id="pgParent">
+  <div class="header"><div class="hleft"><button class="bbtn" onclick="goLand()">&#8592;</button><span class="htitle">锐力体育</span></div><span class="badge badge-p">家长</span></div>
+  <div class="ctn">
+    <div class="card"><div class="stitle">查询课时</div><div class="search-row ok"><input id="pSearch" placeholder="输入学员姓名" onkeydown="if(event.key==='Enter')doPQuery()"><button class="scan-btn ok-style" onclick="openParentScan()"><svg viewBox="0 0 24 24"><path d="M3 5h2V3H3v2zm4-2v2h2V3H7zm4 0v2h2V3h-2zm4 0v2h2V3h-2zm4 0v2h2V3h-2zM3 9h2V7H3v2zm16 0h2V7h-2v2zM3 13h2v-2H3v2zm16 0h2v-2h-2v2zM3 17h2v-2H3v2zm16 0h2v-2h-2v2zM3 21h2v-2H3v2zm4 0h2v-2H7v2zm4 0h2v-2h-2v2zm4 0h2v-2h-2v2zm4 0h2v-2h-2v2zM7 15v-2h2v2h2v-2h2v2h2v-2h2v2h-2v2h-2v-2h-2v2H9v-2H7z"/></svg>扫码</button></div><button class="btn btn-ok btn-sm" style="width:100%;margin-top:10px" onclick="doPQuery()">查 询</button></div>
+    <div id="pMatchList" class="card" style="display:none"></div>
+    <div id="pNoRes" class="card" style="display:none"><div class="empty">未找到该学员</div></div>
+    <div id="pResult" style="display:none">
+      <div class="card">
+        <div class="p-header"><div class="p-name" id="pName"></div><div class="p-meta"><span id="pType"></span> · 编号: <span id="pId"></span></div></div>
+        <div class="irow" id="pClsRow"><span class="il">剩余课时</span><span class="iv hl" id="pCls"></span></div>
+        <div class="irow" id="pExpRow" style="display:none"><span class="il">到期日期</span><span class="iv hl" id="pExp"></span></div>
+        <div class="info-grid" id="pAdvFields">
+          <div class="info-cell ic-body"><div class="ic-label">年龄</div><div class="ic-val" id="pAge">-</div></div>
+          <div class="info-cell ic-body"><div class="ic-label">体重</div><div class="ic-val" id="pWeight">-<span class="ic-unit">kg</span></div></div>
+          <div class="info-cell ic-body"><div class="ic-label">身高</div><div class="ic-val" id="pHeight">-<span class="ic-unit">cm</span></div></div>
+          <div class="info-cell ic-run"><div class="ic-label">200m</div><div class="ic-val" id="p200m">-<span class="ic-unit">s</span></div></div>
+          <div class="info-cell ic-run"><div class="ic-label">500m</div><div class="ic-val" id="p500m">-<span class="ic-unit">s</span></div></div>
+          <div class="info-cell ic-run"><div class="ic-label">1000m</div><div class="ic-val" id="p1000m">-<span class="ic-unit">s</span></div></div>
+          <div class="info-cell ic-fit info-full"><div class="ic-label">综合体能</div><div class="ic-val" id="pFitness">-<span class="ic-unit">小时</span></div></div>
+          <div class="info-cell ic-tech info-full"><div class="ic-label">专项技术</div><div class="ic-val" id="pTech">-<span class="ic-unit">小时</span></div></div>
+          <div class="info-cell ic-status info-full"><div class="ic-label">训练建议</div><div class="ic-val" id="pStatus">-</div></div>
+        </div>
+        <div style="margin-top:12px;text-align:center"><button class="btn btn-p btn-sm" onclick="showParentEditModal()" style="font-size:12px">编辑基本信息</button></div>
+      </div>
+      <div class="card"><div class="stitle">上课记录</div><div id="pRecList"></div><div id="pRecEmpty" class="empty" style="display:none">暂无记录</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Manager Login -->
+<div class="page" id="pgMgrLogin">
+  <div class="header"><div class="hleft"><button class="bbtn" onclick="goLand()">&#8592;</button><span class="htitle">店长登录</span></div></div>
+  <div class="ctn"><div class="login-box"><h2>锐力体育</h2><div class="login-sub">店长登录</div>
+    <div class="fg"><label>店长身份</label><select id="mgrNameSelect"></select></div>
+    <div class="fg"><label>密码</label><input id="mPwd" type="password" autocomplete="off" placeholder="输入店长密码"></div>
+    <button class="btn btn-mg" onclick="doMgrLogin()">登 录</button>
+  </div></div>
+</div>
+
+<!-- Manager Main -->
+<div class="page" id="pgMgr">
+  <div class="header"><div class="hleft"><button class="bbtn" onclick="doMgrLogout()">&#8592;</button><span class="htitle">业绩管理</span></div><span class="store-label" style="font-size:12px;color:var(--g500);margin-right:8px"></span><select id="mgrYear" style="height:24px;font-size:12px;border:1px solid var(--g200);border-radius:4px;padding:0 4px;margin-right:4px" onchange="refreshPerf()">2024</select><select id="mgrMonth" style="height:24px;font-size:12px;border:1px solid var(--g200);border-radius:4px;padding:0 4px;margin-right:8px" onchange="refreshPerf()">1</select><span class="badge badge-m" id="mgrBadge">店长</span></div>
+  <div class="ctn">
+    <div class="sg sg3">
+      <div class="sc"><div class="sv" id="mRev">0</div><div class="sl">当月营业额</div></div>
+      <div class="sc"><div class="sv" id="mProfit">0</div><div class="sl">当月利润</div></div>
+      <div class="sc"><button class="btn btn-mg btn-sm" onclick="showReportModal()" style="margin-top:2px">报业绩</button><div class="sl" style="margin-top:4px">汇报业绩</div></div>
+    </div>
+
+    <div class="card"><div class="stitle">业绩记录</div><div id="perfList"></div><div id="perfEmpty" class="empty" style="display:none">暂无业绩记录</div></div>
+    <div class="card">
+      <div class="stitle">店长收入</div>
+      <div id="mgrIncomeList"></div>
+    </div>
+    <div class="card">
+      <div class="stitle">教练列表与收入</div>
+      <div id="coachIncomeList"></div>
+      <div style="margin-top:12px">
+        <div class="stitle" style="font-size:12px">编辑教练</div>
+        <div id="coachEditor"></div>
+        <div style="display:flex;gap:6px;margin-top:8px">
+          <input id="newCoachName" placeholder="教练名字" style="flex:1;padding:8px 10px;border:1px solid var(--g200);border-radius:6px;font-size:13px;height:36px">
+          <button class="btn btn-p btn-sm" onclick="addCoach()">添加</button>
+        </div>
+        <button class="btn btn-p btn-sm" onclick="saveCoachSalary()" style="margin-top:8px;width:100%">保存底薪</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stitle">兼职收入</div>
+      <div class="fg" style="margin-bottom:8px"><label>时薪（元）</label><input id="ptRate" type="number" value="20" oninput="calcAll()" style="width:120px"></div>
+      <div id="ptList"></div>
+      <div class="fg" style="margin-top:8px;margin-bottom:0"><label>添加兼职</label><div style="display:flex;gap:6px"><input id="ptName" placeholder="姓名" style="flex:1"><input id="ptHours" type="number" placeholder="工时" style="width:80px"><button class="btn btn-p btn-sm" onclick="addPartTime()">添加</button></div></div>
+    </div>
+    <div class="card">
+      <div class="stitle">固定成本（月租金等）</div>
+      <div class="fg">
+        <label>月固定成本</label>
+        <input id="mFixedCost" type="number" value="5500" oninput="calcAll()" style="width:120px">
+      </div>
+      <div class="fg">
+        <label>初级鞋成本</label>
+        <input id="mShoeJunior" type="number" value="195" oninput="calcAll()" style="width:120px">
+      </div>
+      <div class="fg">
+        <label>中级鞋成本</label>
+        <input id="mShoeSenior" type="number" value="750" oninput="calcAll()" style="width:120px">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stitle">意向客户备忘录</div>
+      <div id="prospectList"></div>
+      <div id="prospectEmpty" class="empty" style="display:none">暂无意向客户记录</div>
+      <button class="btn btn-o btn-sm" onclick="showProspectModal()" style="margin-top:10px;width:100%">添加意向客户</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<div class="mo" id="moQR"><div class="md" style="max-width:300px;text-align:center"><div class="qr-card"><div style="font-size:15px;font-weight:600;margin-bottom:4px" id="qrStuName"></div><div style="font-size:12px;color:var(--g400);margin-bottom:12px" id="qrStuId"></div><div id="qrCanvas" style="display:flex;justify-content:center"></div><p>家长扫码即可查看课时</p></div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn btn-o" onclick="closeQRMo()">关闭</button><button class="btn btn-p" onclick="downloadStuQR()">下载二维码</button></div></div></div>
+<div class="mo" id="moScan"><div class="md" style="max-width:400px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="font-size:15px;font-weight:600;margin:0" id="scanTitle">扫码识别</h3><button class="bbtn" onclick="closeScanMo()">&#10005;</button></div><div id="qrReader" style="width:100%"></div><p style="font-size:12px;color:var(--g400);text-align:center;margin-top:8px">将学员二维码对准摄像头</p></div></div>
+<div class="mo" id="moConf"><div class="md"><h3 id="confTitle">确认</h3><div class="md-body" id="confBody"></div><div class="md-acts"><button class="btn btn-o" onclick="clsMo('moConf')">取消</button><button class="btn btn-no" onclick="doConf()">确认</button></div></div></div>
+<div class="mo" id="moEdit"><div class="md"><h3>编辑学员</h3><div class="irow" style="margin-bottom:8px"><span class="il">卡类型</span><span class="iv" id="eTypeDisplay" style="font-weight:600"></span></div><div id="editCkFields"><div class="irow" style="margin-bottom:4px"><span class="il">剩余课时</span><span class="iv" id="eClsDisplay" style="font-weight:600"></span></div><div class="fg"><label>充课时（+N节）</label><input id="eClsAdd" type="number" value="0" min="0" style="color:var(--ok)"></div><div class="fg" style="margin-top:8px"><label>报名日期（可补填）</label><input id="eRegDate" type="date"></div><div class="fg"><label>有效期（月，可补填）</label><select id="eValidMonths"><option value="">不设置</option><option value="1">1个月</option><option value="2">2个月</option><option value="3">3个月</option><option value="4">4个月</option><option value="5">5个月</option><option value="6">6个月</option><option value="7">7个月</option><option value="8">8个月</option><option value="9">9个月</option><option value="10">10个月</option><option value="11">11个月</option><option value="12">12个月</option></select></div></div><div id="editMkFields" style="display:none"><div class="irow" style="margin-bottom:4px"><span class="il">已上课时</span><span class="iv" id="eMkClsDisplay" style="font-weight:600"></span></div><div class="fg"><label>报名日期（可补填）</label><input id="eMkRegDate" type="date"></div><div class="irow" style="margin-bottom:4px"><span class="il">到期日期</span><span class="iv" id="eExpDisplay" style="font-weight:600"></span></div><div class="fg"><label>新到期日期</label><input id="eExpNew" type="date" style="color:var(--p)"></div></div><div class="fg"><label>姓名</label><input id="eName"></div><div class="fg"><label>备注</label><input id="eNote"></div>
+<div id="editAdvFields">
+<div class="stitle" style="margin-top:12px;font-size:12px">体能数据</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+<div class="fg"><label>年龄</label><input id="eAge" type="number"></div>
+<div class="fg"><label>体重(kg)</label><input id="eWeight" type="number"></div>
+<div class="fg"><label>身高(cm)</label><input id="eHeight" type="number"></div>
+</div>
+<div class="stitle" style="margin-top:8px;font-size:12px">成绩记录</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+<div class="fg"><label>200m(秒)</label><input id="e200m" type="number" step="0.1"></div>
+<div class="fg"><label>500m(秒)</label><input id="e500m" type="number" step="0.1"></div>
+<div class="fg"><label>1000m(秒)</label><input id="e1000m" type="number" step="0.1"></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="fg"><label>综合体能(小时)</label><input id="eFitness" type="number" step="0.5"></div>
+<div class="fg"><label>专项技术(小时)</label><input id="eTech" type="number" step="0.5"></div>
+</div>
+<div class="fg"><label>训练建议</label><input id="eStatus" placeholder="如：正常/暂停/休假"></div>
+</div>
+<div class="md-acts"><button class="btn btn-o" onclick="clsMo('moEdit')">取消</button><button class="btn btn-p" onclick="doSaveEdit()">保存</button></div></div></div>
+<div class="mo" id="moAddN"><div class="md"><h3>充值课时</h3><div class="fg"><label>充值节数</label><input id="addNVal" type="number" value="5"></div><div class="md-acts"><button class="btn btn-o" onclick="clsMo('moAddN')">取消</button><button class="btn btn-p" onclick="doAddN()">确认充值</button></div></div></div>
+<div class="mo" id="moDeductN"><div class="md"><h3>扣减课时</h3><div class="fg"><label>扣减节数</label><input id="deductNVal" type="number" value="2"></div><div class="md-acts"><button class="btn btn-o" onclick="clsMo('moDeductN')">取消</button><button class="btn btn-no" onclick="doDeductN()">确认扣减</button></div></div></div><div class="mo" id="moDeductMkN"><div class="md"><h3>记录上课</h3><div class="fg"><label>上课节数</label><input id="deductMkNVal" type="number" value="2" min="1"></div><div class="md-acts"><button class="btn btn-o" onclick="clsMo('moDeductMkN')">取消</button><button class="btn btn-no" onclick="doDeductMkN()">确认</button></div></div></div><div class="mo" id="moRenew"><div class="md"><h3>修改到期日</h3><div class="irow" style="margin-bottom:12px"><span class="il">当前到期</span><span class="iv" id="renewCur"></span></div><div class="fg"><label>新到期日期</label><input id="renewNewDate" type="date" style="color:var(--p)"></div><div class="md-acts"><button class="btn btn-o" onclick="clsMo('moRenew')">取消</button><button class="btn btn-p" onclick="doRenew()">确认修改</button></div></div></div>
+<div class="mo" id="moParentEdit"><div class="md"><h3>编辑基本信息</h3><div id="peAdvFields"><div class="fg"><label>年龄</label><input id="peAge" type="number" placeholder="岁"></div><div class="fg"><label>体重 (kg)</label><input id="peWeight" type="number" placeholder="kg"></div><div class="fg"><label>身高 (cm)</label><input id="peHeight" type="number" placeholder="cm"></div></div><div class="md-acts"><button class="btn btn-o" onclick="clsMo('moParentEdit')">取消</button><button class="btn btn-p" onclick="doParentEditSave()">保存</button></div></div></div>
+<div class="mo" id="moReport"><div class="md"><h3>汇报业绩</h3><div id="rptModalBody"></div><div class="md-acts"><button class="btn btn-o" onclick="clsMo('moReport')">取消</button><button class="btn btn-mg" onclick="doReport()">提交</button>
+    <button id="rptDelBtn" class="btn" style="display:none;margin-top:8px;background:#ef4444;color:#fff;width:100%" onclick="deletePerfRec(window._editPerfIdx);clsMo('moReport')">删除此记录</button></div></div></div>
+<div class="mo" id="moProspect"><div class="md"><h3>添加意向客户</h3><div class="fg"><label>客户微信名</label><input id="pWechat" placeholder="微信名"></div><div class="fg"><label>孩子年龄</label><input id="pAge" type="number" placeholder="岁" style="width:120px"></div><div class="fg"><label>情况简述</label><textarea id="pNote" placeholder="简述客户情况" rows="3"></textarea></div><div class="md-acts"><button class="btn btn-o" onclick="clsMo('moProspect')">取消</button><button class="btn btn-mg" onclick="doAddProspect()">添加</button></div></div></div>
+
+<div class="tc" id="tc"></div>
+
+<script>
+// 姓名清洗: 只保留中文、英文字母、数字、常见标点
+function cleanName(s){return s.replace(/[^\u4e00-\u9fff\u3400-\u4dbfa-zA-Z0-9·\-\s]/g,'').trim()}
+let db={},coach=null,selId=null,editId=null,confCb=null,addType='次卡',editTypeVal='次卡',advBilling='monthly',editAdvBilling='monthly';let currentMgrName='';let MANAGERS=[];
+const STORE_NAMES={'henglicheng':'恒力城店','baolong':'宝龙店','taihe':'泰禾店','yangguang':'阳光天地店'};
+let perfData=null,mgrPwd='',storeCoachNames=[];
+
+function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function goLand(){go('pgLand')}
+
+
+function doExportJSON(){window.location.href='/api/export?store='+currentStore}
+function doExportHTML(){window.location.href='/api/export-html?store='+currentStore}
+
+
+async function deletePerfRec(idx){
+  if(!confirm('确定删除该业绩记录？'))return;
+  perfData.perfRecords.splice(idx,1);
+  try{await savePerf({perfRecords:perfData.perfRecords});toast('已删除','ok');refreshPerf()}catch(e){toast('删除失败','no')}
+}
+
+
+function goStoreSelect(type){
+  adminLoginType=type;
+  if(type==='admin'){
+    document.getElementById('storeTitle').textContent='选择门店';
+    document.getElementById('storeSub').textContent='请选择要管理的门店';
+  }
+  go('pgStore');
+}
+function selectStore(store){
+  currentStore=store;
+  adminStore=store;
+  document.querySelectorAll('.store-label').forEach(el=>el.textContent=STORE_NAMES[store]||store);
+  // Prewarm: wake Render server while user types password
+  fetch('/api/ping?store=_prewarm').catch(()=>{});
+  if(pendingAction==='coach')goCoachLogin();
+  else if(pendingAction==='parent')goParent();
+  else if(pendingAction==='mgr')goMgrLogin();
+  else if(pendingAction==='admin')go('pgAdminLogin');
+  pendingAction='';
+}
+
+function goCoachLogin(){go('pgLogin');document.getElementById('lUser').value='';document.getElementById('lPwd').value='';fetch('/api/ping?store=_prewarm').catch(()=>{})}
+function goParent(){go('pgParent');document.getElementById('pSearch').value='';['pResult','pNoRes','pMatchList'].forEach(id=>document.getElementById(id).style.display='none')}
+async function goMgrLogin(){go('pgMgrLogin');document.getElementById('mPwd').value='';try{const r=await fetch('/api/managers?store='+currentStore).then(r=>r.json());const sel=document.getElementById('mgrNameSelect');sel.innerHTML=r.map(m=>'<option value="'+m.name+'">'+m.name+'</option>').join('')||'<option value="">无可用店长</option>'}catch(e){document.getElementById('mgrNameSelect').innerHTML='<option value="">加载失败</option>'}}
+
+async function api(method,path,body){let url=path;if(method==='GET'&&currentStore)url+=(url.includes('?')?'&':'?')+'store='+currentStore;if(body&&typeof body==='object'){body={...body,store:currentStore}}const r=await fetch(url,{method,headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});if(!r.ok){const e=await r.json().catch(()=>({error:'网络错误'}));throw new Error(e.error||'操作失败')}return r.json()}
+
+// ===== Coach system =====
+async function doLogin(){const u=document.getElementById('lUser').value.trim(),p=document.getElementById('lPwd').value,b=document.querySelector('.login-box .btn');if(!u||!p){toast('请输入账号密码','wn');return}b.disabled=true;b.textContent='登录中...';try{const r=await api('POST','/api/login',{username:u,password:p});coach={...r,_pwd:p};toast('欢迎 '+r.name,'ok');enterCoach()}catch(e){toast(e.message,'no')}finally{b.disabled=false;b.textContent='登 录'}}
+function doLogout(){coach=null;stopAutoSync();goLand()}
+async function enterCoach(){go('pgCoach');document.getElementById('coachBadge').textContent=coach.name;await refresh();startAutoSync()}
+async function loadDB(){db=await api('GET','/api/data');return db}
+async function save(updates){await api('PUT','/api/data',{auth:{username:coach.username,password:coach._pwd},updates})}
+function stuType(s){return s.type||'次卡'}
+function isMonthly(s){return stuType(s)==='月卡'||(stuType(s)==='提高班'&&(s.billing||'monthly')==='monthly')}
+function isClassCard(s){return stuType(s)==='次卡'||(stuType(s)==='提高班'&&s.billing==='class')}
+function typeTag(t,billing){const sub=billing==='class'?'-课时':'-月卡';return '<span class="ttag '+(t==='月卡'?'ttag-mk':t==='提高班'?'ttag-adv':'ttag-ck')+'">'+t+(t==='提高班'?(billing||'monthly')==='monthly'?'-月卡':'-课时':'')+'</span>'}
+function typeAvClass(t){return t==='月卡'?'mk':t==='提高班'?'adv':''}
+function daysUntil(d){if(!d)return 9999;const t=new Date(d);t.setHours(23,59,59);return Math.ceil((t-new Date())/864e5)}
+function expDisplay(s){if(!isMonthly(s)){if(s.totalClasses!=null&&s.totalClasses>0)return{html:s.classes+'/'+s.totalClasses+'节',cls:'scls'};return{html:s.classes+'节',cls:'scls'}}const d=daysUntil(s.expiry);const clsInfo=s.classes>0?'已上'+s.classes+'节 · ':'';if(d<0)return{html:clsInfo+'已过期'+Math.abs(d)+'天',cls:'sexp expired'};if(d<=7)return{html:clsInfo+'余'+d+'天',cls:'sexp soon'};return{html:clsInfo+'余'+d+'天',cls:'sexp ok'}}
+function fmtExp(d){if(!d)return'未设置';const n=daysUntil(d);if(n<0)return'已过期'+Math.abs(n)+'天 ('+d+')';return d+' (余'+n+'天)'}
+
+async function refresh(){try{await loadDB();const cks=db.students.filter(s=>stuType(s)==='次卡'),mks=db.students.filter(s=>stuType(s)==='月卡'),advs=db.students.filter(s=>stuType(s)==='提高班');document.getElementById('sCk').textContent=cks.length;document.getElementById('sMk').textContent=mks.length;document.getElementById('sAdv').textContent=advs.length;document.getElementById('t4Ck').textContent=cks.length?'('+cks.length+')':'';document.getElementById('t4Mk').textContent=mks.length?'('+mks.length+')':'';document.getElementById('t4Adv').textContent=advs.length?'('+advs.length+')':'';document.getElementById('cSearch').value='';document.getElementById('cMatchList').style.display='none';document.getElementById('selInfo').style.display='none';selId=null;renderRecs();renderStuLists()}catch(e){toast('加载失败','no');console.error(e)}
+}
+function cSearchStu(){const q=document.getElementById('cSearch').value.trim(),ml=document.getElementById('cMatchList');selId=null;document.getElementById('selInfo').style.display='none';if(!q){ml.style.display='none';return}const m=db.students.filter(s=>s.name.includes(q));if(!m.length){ml.style.display='block';ml.innerHTML='<div style="text-align:center;padding:10px;color:var(--g400);font-size:13px">未找到学员</div>';return}ml.style.display='block';ml.innerHTML=m.map(s=>{const ed=expDisplay(s);return '<div class="mi" onclick="pickStu(\''+s.id+'\')"><div><div class="mn">'+s.name+' '+typeTag(stuType(s),s.billing)+'</div><div class="mid">'+s.id+(s.note?' · '+s.note:'')+'</div></div><div class="mc">'+ed.html+'</div></div>'}).join('')}
+function pickStu(id){const s=db.students.find(x=>x.id===id);if(!s)return;selId=id;const t=stuType(s);document.getElementById('cMatchList').style.display='none';document.getElementById('cSearch').value=s.name;document.getElementById('iName').textContent=s.name;document.getElementById('iId').textContent=s.id;document.getElementById('iType').innerHTML=typeTag(t,s.billing);document.getElementById('iNote').textContent=s.note||'无';if(isMonthly(s)){document.getElementById('iClsRow').style.display='flex';document.getElementById('iClsRow').querySelector('.il').textContent='已上课时';document.getElementById('iCls').textContent=s.classes+' 节';document.getElementById('iExpRow').style.display='flex';document.getElementById('iExp').textContent=fmtExp(s.expiry);document.getElementById('actCk').style.display='none';document.getElementById('actCk2').style.display='none';document.getElementById('actMk').style.display='flex';document.getElementById('actMk2').style.display='flex';document.getElementById('actMkFreeze').style.display='flex';document.getElementById('btnDeductMk').disabled=false;document.getElementById('btnDeductMkN').disabled=false;document.getElementById('btnRenew').disabled=false;if(s.isFrozen){document.getElementById('iFreezeRow').style.display='flex';var _fsd=new Date(s.frozenStartDate);var _now=new Date();var _elapsed=Math.round((_now.getTime()-_fsd.getTime())/(1000*60*60*24));var _ep=s.expiry.split('-');var _ed=new Date(parseInt(_ep[0]),parseInt(_ep[1])-1,parseInt(_ep[2]));_ed.setDate(_ed.getDate()+_elapsed);document.getElementById('iExp').textContent=fmtExp(_ed.getFullYear()+'-'+String(_ed.getMonth()+1).padStart(2,'0')+'-'+String(_ed.getDate()).padStart(2,'0'));document.getElementById('iFreeze').textContent='已冻结（'+_elapsed+'天，到期日已顺延至 '+fmtExp(_ed.getFullYear()+'-'+String(_ed.getMonth()+1).padStart(2,'0')+'-'+String(_ed.getDate()).padStart(2,'0'))+'）';document.getElementById('btnFreeze').textContent='恢复上课';document.getElementById('btnFreeze').style.background='var(--ok)'}else{document.getElementById('iFreezeRow').style.display='none';document.getElementById('btnFreeze').textContent='冻课';document.getElementById('btnFreeze').style.background='var(--wn)'}document.getElementById('btnDeductMk').disabled=s.isFrozen;document.getElementById('btnDeductMkN').disabled=s.isFrozen}else{document.getElementById('iClsRow').style.display='flex';document.getElementById('iClsRow').querySelector('.il').textContent='剩余课时';if(s.totalClasses!=null&&s.totalClasses>0){document.getElementById('iCls').textContent=s.classes+'/'+s.totalClasses+' 节'}else{document.getElementById('iCls').textContent=s.classes+' 节'};document.getElementById('iExpRow').style.display='none';document.getElementById('actCk').style.display='flex';document.getElementById('actCk2').style.display='flex';document.getElementById('actMk').style.display='none';document.getElementById('actMk2').style.display='none';document.getElementById('actMkFreeze').style.display='none';document.getElementById('iFreezeRow').style.display='none';document.getElementById('btnDeduct').disabled=s.classes<=0;document.getElementById('btnDeductN').disabled=s.classes<=0;document.getElementById('btnAdd').disabled=false;document.getElementById('btnAddN').disabled=false}document.getElementById('selInfo').style.display='block'}
+function doDeduct(){if(!selId)return;const s=db.students.find(x=>x.id===selId);if(!s||s.classes<=0){toast('课时不足','wn');return}const tcInfo=s.totalClasses!=null&&s.totalClasses>0;showConf('确认扣课','为 <strong>'+s.name+'</strong> 扣减 1 节课？<br>剩余：'+s.classes+(tcInfo?'/'+s.totalClasses:'')+' → '+(s.classes-1)+(tcInfo?'/'+s.totalClasses:''),async()=>{try{await api('POST','/api/deduct',{auth:{username:coach.username,password:coach._pwd},studentId:selId,n:1,mode:'ck'});toast('已扣减 1 节','ok');await refresh();pickStu(selId)}catch(e){toast(e.message||'扣课失败','no')}})}
+function doDeductMk(){if(!selId)return;const s=db.students.find(x=>x.id===selId);if(!s)return;showConf('确认上课','为 <strong>'+s.name+'</strong>（'+stuType(s)+'）记录上课 1 节？<br>已上：'+s.classes+' → '+(s.classes+1),async()=>{try{await api('POST','/api/deduct',{auth:{username:coach.username,password:coach._pwd},studentId:selId,n:1,mode:'mk'});toast('已记录上课 1 节','ok');await refresh();pickStu(selId)}catch(e){toast(e.message||'操作失败','no')}})}
+function showDeductMkNModal(){if(!selId)return;document.getElementById('deductMkNVal').value=2;document.getElementById('moDeductMkN').classList.add('on')}
+async function toggleFreeze(){if(!selId)return;const s=db.students.find(x=>x.id===selId);if(!s||!isMonthly(s))return;if(s.isFrozen){const fsd=new Date(s.frozenStartDate);const now=new Date();const elapsed=Math.round((now.getTime()-fsd.getTime())/(1000*60*60*24));showConf('恢复上课','确认恢复 <strong>'+s.name+'</strong> 的月卡？<br>冻结 '+elapsed+' 天，到期日将顺延 '+elapsed+' 天',async()=>{const ep=s.expiry.split('-');const d=new Date(parseInt(ep[0]),parseInt(ep[1])-1,parseInt(ep[2]));d.setDate(d.getDate()+elapsed);s.expiry=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');if(!s.freezeHistory)s.freezeHistory=[];s.freezeHistory.push({action:'恢复',date:nowLocal(),days:elapsed});s.isFrozen=false;s.frozenDays=0;s.frozenStartDate=null;try{await save({students:db.students});toast('已恢复','ok');await refresh();pickStu(selId)}catch(e){toast('保存失败','no')}})}else{const days=daysUntil(s.expiry);if(days<=0){toast('已过期，请先续期','wn');return}showConf('冻课','确认冻结 <strong>'+s.name+'</strong> 的月卡？<br>剩余 '+days+' 天将暂停',async()=>{if(!s.freezeHistory)s.freezeHistory=[];s.freezeHistory.push({action:'冻课',date:nowLocal(),days:days});s.isFrozen=true;s.frozenDays=days;s.frozenStartDate=nowLocal();try{await save({students:db.students});toast('已冻结','ok');await refresh();pickStu(selId)}catch(e){toast('保存失败','no')}})}}
+async function doDeductMkN(){const n=parseInt(document.getElementById('deductMkNVal').value)||0;if(n<=0){toast('请输入正数','wn');return}if(!selId)return;const s=db.students.find(x=>x.id===selId);if(!s)return;clsMo('moDeductMkN');showConf('确认上课','为 <strong>'+s.name+'</strong>（'+stuType(s)+'）记录上课 '+n+' 节？<br>已上：'+s.classes+' → '+(s.classes+n),async()=>{try{await api('POST','/api/deduct',{auth:{username:coach.username,password:coach._pwd},studentId:selId,n:n,mode:'mk'});toast('已记录上课 '+n+' 节','ok');await refresh();pickStu(selId)}catch(e){toast(e.message||'操作失败','no')}})}
+
+function doAddClass(){if(!selId)return;const s=db.students.find(x=>x.id===selId);if(!s)return;showConf('确认充值','为 <strong>'+s.name+'</strong> 充值 1 节课？<br>需管理员审核后生效',async()=>{try{await api('POST','/api/pending',{auth:{username:coach.username,password:coach._pwd},type:'charge',details:{studentId:selId,studentName:s.name,n:1}});toast('已提交审核，等待管理员确认','ok')}catch(e){toast('提交失败','no')}})}
+function showAddNModal(){document.getElementById('addNVal').value=5;document.getElementById('moAddN').classList.add('on')}
+function showDeductNModal(){if(!selId)return;document.getElementById('deductNVal').value=2;document.getElementById('moDeductN').classList.add('on')}
+async function doAddN(){const n=parseInt(document.getElementById('addNVal').value)||0;if(n<=0){toast('请输入正数','wn');return}if(!selId)return;const s=db.students.find(x=>x.id===selId);if(!s)return;clsMo('moAddN');showConf('确认充值','为 <strong>'+s.name+'</strong> 充值 '+n+' 节课？<br>需管理员审核后生效',async()=>{try{await api('POST','/api/pending',{auth:{username:coach.username,password:coach._pwd},type:'charge',details:{studentId:selId,studentName:s.name,n:n}});toast('已提交审核，等待管理员确认','ok')}catch(e){toast('提交失败','no')}})}
+async function doDeductN(){const n=parseInt(document.getElementById('deductNVal').value)||0;if(n<=0){toast('请输入正数','wn');return}if(!selId)return;const s=db.students.find(x=>x.id===selId);if(!s||s.classes<n){toast('课时不足','wn');return}clsMo('moDeductN');const tcInfo=s.totalClasses!=null&&s.totalClasses>0;showConf('确认扣课','为 <strong>'+s.name+'</strong> 扣减 '+n+' 节课？<br>剩余：'+s.classes+(tcInfo?'/'+s.totalClasses:'')+' → '+(s.classes-n)+(tcInfo?'/'+s.totalClasses:''),async()=>{try{await api('POST','/api/deduct',{auth:{username:coach.username,password:coach._pwd},studentId:selId,n:n,mode:'ck'});toast('已扣减 '+n+' 节','ok');await refresh();pickStu(selId)}catch(e){toast(e.message||'扣课失败','no')}})}
+function showRenewModal(){if(!selId)return;const s=db.students.find(x=>x.id===selId);if(!s)return;document.getElementById('renewCur').textContent=fmtExp(s.expiry);let base;if(s.expiry&&daysUntil(s.expiry)>0){const parts=s.expiry.split('-');base=new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]))}else{const now=new Date();base=new Date(now.getFullYear(),now.getMonth(),now.getDate())}base.setMonth(base.getMonth()+3);const y=base.getFullYear();const m=String(base.getMonth()+1).padStart(2,'0');const d=String(base.getDate()).padStart(2,'0');document.getElementById('renewNewDate').value=y+'-'+m+'-'+d;document.getElementById('moRenew').classList.add('on')}
+async function doRenew(){if(!selId)return;const s=db.students.find(x=>x.id===selId);if(!s)return;const newExp=document.getElementById('renewNewDate').value;if(!newExp){toast('请选择到期日期','wn');return}if(newExp===s.expiry){toast('日期未变更','wn');return}clsMo('moRenew');showConf('确认修改到期日','为 <strong>'+s.name+'</strong> 设置到期日至 '+newExp+'？<br>需管理员审核后生效',async()=>{try{await api('POST','/api/pending',{auth:{username:coach.username,password:coach._pwd},type:'renew',details:{studentId:selId,studentName:s.name,newExpiry:newExp}});toast('已提交审核，等待管理员确认','ok')}catch(e){toast('提交失败','no')}})}
+function getTodayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function nowLocal(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'T'+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0')}
+function renderRI(r,mode,showDate){const d=new Date(r.time),t=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');const ds=(d.getMonth()+1)+'/'+d.getDate(),timeStr=showDate?ds+' '+t:t;const isAdd=r.type==='充',isRenew=r.type==='续';const _stu=r.sid?db.students.find(x=>x.id===r.sid):null;const _sn=_stu?_stu.name:r.sname;const _coach=r.coach||'';const _coaches=db.coaches||[];const _cMatch=_coaches.find(c=>c.name===_coach);const cn=_cMatch?_cMatch.name:_coach;if(mode==='coach'){const stu=r.sid?db.students.find(x=>x.id===r.sid):null;const isMkStu=stu&&isMonthly(stu);const act=isRenew?'修改到期日至 '+r.after:(isAdd?(r.n===0&&r.note?r.note:'充值 '+r.n+'节'):isMkStu?'上课 '+r.n+'节':'扣减 '+r.n+'节');const afterLabel=isRenew?r.after:(isMkStu?(r.n===0&&r.note?r.note:'已上'+r.after+'节'):'余'+r.after+'节');return '<div class="ri"><div class="rd" style="background:'+(isRenew?'var(--adv)':isAdd?'var(--ok)':'var(--p)')+'"></div><div class="rm"><div class="rn">'+_sn+' · '+act+'</div><div class="rmt">'+timeStr+' · <span style="color:var(--g700);font-weight:500">'+cn+'</span></div></div><div class="rb '+(isRenew?'rb-p':isAdd?'rb-ok':'rb-no')+'">'+afterLabel+'</div></div>'}const stu2=r.sid?db.students.find(x=>x.id===r.sid):null;const isMkStu2=stu2&&isMonthly(stu2);const act=isRenew?'修改到期日至 '+r.after:(isAdd?(r.n===0&&r.note?r.note:'充值 '+r.n+'节'):isMkStu2?'上课 '+r.n+'节':'上课扣减 '+r.n+'节');return '<div class="ri"><div class="rd" style="background:'+(isRenew?'var(--adv)':isAdd?'var(--ok)':'var(--p)')+'"></div><div class="rm"><div class="rn">'+act+'</div><div class="rmt">'+timeStr+' · <span style="color:var(--g700);font-weight:500">'+cn+'</span></div></div><div class="rb '+(isRenew?'rb-p':isAdd?'rb-ok':'rb-p')+'">'+(isRenew?r.after:(r.n===0&&r.note?r.after:(isMkStu2?'已上'+r.after+'节':'余'+r.after+'节')))+'</div></div>'}
+function renderRecs(){const _now=new Date(),_y=_now.getFullYear(),_m=_now.getMonth(),_d=_now.getDate();const todayR=db.records.filter(r=>{if(!r.time)return false;const d=new Date(r.time);return d.getFullYear()===_y&&d.getMonth()===_m&&d.getDate()===_d}),histR=db.records.filter(r=>{if(!r.time)return false;const d=new Date(r.time);return!(d.getFullYear()===_y&&d.getMonth()===_m&&d.getDate()===_d)});const tEl=document.getElementById('cTodayRecs'),tEm=document.getElementById('cTodayEmpty');if(!todayR.length){tEl.innerHTML='';tEm.style.display='block'}else{tEm.style.display='none';tEl.innerHTML=todayR.map(r=>renderRI(r,'coach')).join('');if(todayR.length>5){tEl.style.maxHeight='300px';tEl.style.overflowY='auto';tEl.style.webkitOverflowScrolling='touch'}else{tEl.style.maxHeight='';tEl.style.overflowY=''}}const hEl=document.getElementById('cHistRecs'),hEm=document.getElementById('cHistEmpty');if(!histR.length){hEl.innerHTML='';hEm.style.display='block'}else{hEm.style.display='none';hEl.innerHTML=histR.map(r=>renderRI(r,'coach',true)).join('')}document.getElementById('histBtn').style.display=histR.length?'flex':'none';document.getElementById('cHistRecs').style.display='none'}
+function toggleHist(){const el=document.getElementById('cHistRecs'),btn=document.getElementById('histBtn');if(el.style.display==='none'){el.style.display='block';btn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg> 收起历史'}else{el.style.display='none';btn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg> 历史记录'}}
+function renderStuLists(){const cks=db.students.filter(s=>stuType(s)==='次卡').sort((a,b)=>a.classes-b.classes||a.id.localeCompare(b.id)),mks=db.students.filter(s=>stuType(s)==='月卡').sort((a,b)=>daysUntil(a.expiry)-daysUntil(b.expiry)),advs=db.students.filter(s=>stuType(s)==='提高班').sort((a,b)=>{const am=isMonthly(a),bm=isMonthly(b);if(am&&!bm)return -1;if(!am&&bm)return 1;if(am)return daysUntil(a.expiry)-daysUntil(b.expiry);return a.classes-b.classes});document.getElementById('ckList').innerHTML=renderGroup(cks);document.getElementById('mkList').innerHTML=renderGroup(mks);document.getElementById('advList').innerHTML=renderGroup(advs)}
+function renderGroup(list){if(!list.length)return '<div class="empty">暂无学员</div>';if(list.length<=5)return list.map(s=>renderSli(s)).join('');const show=list.slice(0,5),rest=list.slice(5);return show.map(s=>renderSli(s)).join('')+'<button class="fb" style="width:100%;padding:8px;margin:6px 0" onclick="this.nextElementSibling.style.display=\'block\';this.outerHTML=\'\'">展开全部 ('+list.length+'人)</button><div style="display:none">'+rest.map(s=>renderSli(s)).join('')+'</div>'}
+function renderSli(s){const t=stuType(s),avc=typeAvClass(t),ed=expDisplay(s);return '<div class="sli"><div class="sli-info"><div class="sav '+avc+'">'+s.name[0]+'</div><div style="min-width:0"><div class="sn">'+s.name+'</div><div class="sid">'+s.id+(s.note?' · '+s.note:'')+'</div></div></div><div style="display:flex;align-items:center;gap:8px"><span class="'+ed.cls+'">'+ed.html+'</span><div class="sact"><button class="abtn" onclick="showStuQR(\''+s.id+'\')" title="二维码"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13-2h-2v4h-2v2h2v2h2v-2h2v-2h-2v-4zm0 6h-2v2h2v-2zm-4-2h-2v4h2v-4z"/></svg></button><button class="abtn" onclick="openEdit(\''+s.id+'\')" title="编辑"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button><button class="abtn dng" onclick="delStu(\''+s.id+'\')" title="删除"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div></div></div>'}
+function swMainTab(tab,el){document.querySelectorAll('#mainTabs .t4').forEach(x=>x.classList.remove('on'));el.classList.add('on');document.getElementById('tabCk').style.display=tab==='ck'?'block':'none';document.getElementById('tabMk').style.display=tab==='mk'?'block':'none';document.getElementById('tabAdv').style.display=tab==='adv'?'block':'none';document.getElementById('tabAdd').style.display=tab==='add'?'block':'none';if(tab==='add'){addType='次卡';document.getElementById('nName').value='';document.getElementById('nId').value=String(db.nextId).padStart(4,'0');document.getElementById('nCls').value='20';document.getElementById('nTotalCls').value='20';document.getElementById('nExp').value='';document.getElementById('nNote').value='';selAddType('次卡',document.querySelector('#addTypeSel .type-opt'))}}
+function selAddType(t,el){addType=t;advBilling='monthly';document.querySelectorAll('#addTypeSel .type-opt').forEach(o=>{o.className='type-opt'});el.classList.add(t==='月卡'?'sel-mk':t==='提高班'?'sel-adv':'sel-ck');document.getElementById('addCkFields').style.display=t==='次卡'||(t==='提高班'&&advBilling==='class')?'block':'none';document.getElementById('addMkFields').style.display=t==='月卡'?'block':'none';document.getElementById('addAdvBilling').style.display=t==='提高班'?'block':'none';if(t==='提高班')selAdvBilling('monthly',document.querySelector('#advBillingSel .type-opt'))}
+function selAdvBilling(b,el){advBilling=b;document.querySelectorAll('#advBillingSel .type-opt').forEach(o=>{o.className='type-opt'});el.classList.add(b==='monthly'?'sel-mk':'sel-adv');document.getElementById('addCkFields').style.display=b==='class'?'block':'none';document.getElementById('addMkFields').style.display=b==='monthly'?'block':'none'}
+function selEditType(t,el){editTypeVal=t;document.querySelectorAll('#editTypeSel .type-opt').forEach(o=>{o.className='type-opt'});el.classList.add(t==='月卡'?'sel-mk':t==='提高班'?'sel-adv':'sel-ck');document.getElementById('editAdvBilling').style.display=t==='提高班'?'block':'none';if(t!=='提高班'){document.getElementById('editCkFields').style.display=t==='次卡'?'block':'none';document.getElementById('editMkFields').style.display=t==='月卡'?'block':'none'}}
+function selEditAdvBilling(b,el){editAdvBilling=b;document.querySelectorAll('#editAdvBillingSel .type-opt').forEach(o=>{o.className='type-opt'});el.classList.add(b==='monthly'?'sel-mk':'sel-adv');document.getElementById('editCkFields').style.display=b==='class'?'block':'none';document.getElementById('editMkFields').style.display=b==='monthly'?'block':'none'}
+async function doAddStu(){const name=cleanName(document.getElementById('nName').value),id=document.getElementById('nId').value.trim(),note=document.getElementById('nNote').value.trim();if(!name){toast('请输入姓名','wn');return}if(!id){toast('请输入编号','wn');return}const stu={id,name,note:note||'',type:addType};if(addType==='月卡'){stu.classes=0;stu.expiry=document.getElementById('nExp').value||'';if(!stu.expiry){toast('请设置到期日期','wn');return}}else if(addType==='提高班'&&advBilling==='monthly'){stu.billing='monthly';stu.classes=0;stu.expiry=document.getElementById('nExp').value||'';if(!stu.expiry){toast('请设置到期日期','wn');return}}else if(addType==='提高班'&&advBilling==='class'){stu.billing='class';stu.classes=parseInt(document.getElementById('nCls').value)||0;const tc=parseInt(document.getElementById('nTotalCls').value);stu.totalClasses=tc>0?tc:stu.classes}else{stu.classes=parseInt(document.getElementById('nCls').value)||0;const tc=parseInt(document.getElementById('nTotalCls').value);stu.totalClasses=tc>0?tc:stu.classes;const regDate=document.getElementById('nRegDate').value;if(regDate)stu.regDate=regDate;const validMonths=parseInt(document.getElementById('nValidMonths').value)||0;if(validMonths>0){stu.validMonths=validMonths;const rp=regDate.split('-');const d=new Date(parseInt(rp[0]),parseInt(rp[1])-1,parseInt(rp[2]));d.setMonth(d.getMonth()+validMonths);stu.expiry=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}}const nid=Math.max(db.nextId,parseInt(id)+1);try{await api('POST','/api/pending',{auth:{username:coach.username,password:coach._pwd},type:'add',details:{student:stu,nextId:nid}});toast(name+' 已提交审核，等待管理员确认','ok');await refresh();db.nextId=nid;document.getElementById('nId').value=String(db.nextId).padStart(4,'0');swMainTab('ck',document.querySelector('#mainTabs .t4'))}catch(e){toast('提交失败','no')}}
+function openEdit(id){const s=db.students.find(x=>x.id===id);if(!s)return;editId=id;editTypeVal=stuType(s);editAdvBilling=s.billing||(stuType(s)==='提高班'?'monthly':'class');document.getElementById('eName').value=s.name;document.getElementById('eNote').value=s.note||'';document.getElementById('eTypeDisplay').textContent=editTypeVal+(editTypeVal==='提高班'?'-'+(editAdvBilling==='monthly'?'月卡':'课时卡'):'');document.getElementById('eClsAdd').value=0;if(editTypeVal==='月卡'||(editTypeVal==='提高班'&&editAdvBilling==='monthly')){document.getElementById('eMkClsDisplay').textContent=s.classes+' 节';document.getElementById('eExpDisplay').textContent=s.expiry||'未设置';document.getElementById('eExpNew').value=s.expiry||'';document.getElementById('eMkRegDate').value=s.regDate||''}else{document.getElementById('eClsDisplay').textContent=(s.totalClasses!=null&&s.totalClasses>0)?(s.classes+'/'+s.totalClasses+' 节'):(s.classes+' 节');document.getElementById('eRegDate').value=s.regDate||'';document.getElementById('eValidMonths').value=s.validMonths||''}document.getElementById('eAge').value=s.age||'';document.getElementById('eWeight').value=s.weight||'';document.getElementById('eHeight').value=s.height||'';document.getElementById('e200m').value=s.run200m||'';document.getElementById('e500m').value=s.run500m||'';document.getElementById('e1000m').value=s.run1000m||'';document.getElementById('eFitness').value=s.fitness||'';document.getElementById('eTech').value=s.tech||'';document.getElementById('eStatus').value=s.trainStatus||'';document.getElementById('editCkFields').style.display=(editTypeVal==='次卡'||(editTypeVal==='提高班'&&editAdvBilling==='class'))?'block':'none';document.getElementById('editMkFields').style.display=(editTypeVal==='月卡'||(editTypeVal==='提高班'&&editAdvBilling==='monthly'))?'block':'none';document.getElementById('editAdvFields').style.display=editTypeVal==='提高班'?'block':'none';document.getElementById('moEdit').classList.add('on')}
+async function doSaveEdit(){const saveBtn=event.target;const origText=saveBtn.textContent;saveBtn.disabled=true;saveBtn.textContent='保存中…';saveBtn.style.opacity='0.6';const name=cleanName(document.getElementById('eName').value),note=document.getElementById('eNote').value.trim();if(!name){toast('姓名不能空','wn');return}const s=db.students.find(x=>x.id===editId);s.name=name;s.note=note;const isMonthlyType=editTypeVal==='月卡'||(editTypeVal==='提高班'&&editAdvBilling==='monthly');const addCls=!isMonthlyType?(parseInt(document.getElementById('eClsAdd').value)||0):0;const newExpVal=isMonthlyType?document.getElementById('eExpNew').value:'';const mkRegDate=isMonthlyType?document.getElementById('eMkRegDate').value:'';if(editTypeVal==='提高班'){s.age=parseInt(document.getElementById('eAge').value)||undefined;s.weight=parseFloat(document.getElementById('eWeight').value)||undefined;s.height=parseFloat(document.getElementById('eHeight').value)||undefined;s.run200m=parseFloat(document.getElementById('e200m').value)||undefined;s.run500m=parseFloat(document.getElementById('e500m').value)||undefined;s.run1000m=parseFloat(document.getElementById('e1000m').value)||undefined;s.fitness=parseFloat(document.getElementById('eFitness').value)||undefined;s.tech=parseFloat(document.getElementById('eTech').value)||undefined;s.trainStatus=document.getElementById('eStatus').value.trim()||undefined;}else{s.age=undefined;s.weight=undefined;s.height=undefined;s.run200m=undefined;s.run500m=undefined;s.run1000m=undefined;s.fitness=undefined;s.tech=undefined;s.trainStatus=undefined;const newRegDate=document.getElementById('eRegDate').value;if(newRegDate&&!isMonthlyType)s.regDate=newRegDate;const newValidMonths=parseInt(document.getElementById('eValidMonths').value)||0;if(newValidMonths>0){s.validMonths=newValidMonths;if(newRegDate){const rp=newRegDate.split('-');const d=new Date(parseInt(rp[0]),parseInt(rp[1])-1,parseInt(rp[2]));d.setMonth(d.getMonth()+newValidMonths);s.expiry=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}}}try{await save({students:db.students});let hasFinancial=false;if(addCls>0){hasFinancial=true;await api('POST','/api/pending',{auth:{username:coach.username,password:coach._pwd},type:'charge',details:{studentId:editId,studentName:s.name,n:addCls}})}if(newExpVal&&newExpVal!==s.expiry){hasFinancial=true;await api('POST','/api/pending',{auth:{username:coach.username,password:coach._pwd},type:'renew',details:{studentId:editId,studentName:s.name,newExpiry:newExpVal}})}if(mkRegDate&&mkRegDate!==(s.regDate||'')){hasFinancial=true;await api('POST','/api/pending',{auth:{username:coach.username,password:coach._pwd},type:'regDate',details:{studentId:editId,studentName:s.name,newRegDate:mkRegDate}})}saveBtn.disabled=false;saveBtn.textContent=origText;saveBtn.style.opacity='1';clsMo('moEdit');toast(hasFinancial?'信息已保存，充值/续期已提交审核':'已保存','ok');await refresh()}catch(e){toast('保存失败','no');saveBtn.disabled=false;saveBtn.textContent=origText;saveBtn.style.opacity='1'}}
+function delStu(id){const s=db.students.find(x=>x.id===id);if(!s)return;showConf('删除学员','确认提交删除 <strong>'+s.name+'</strong>（'+s.id+'）的申请？<br>需管理员审核后生效',async()=>{try{await api('POST','/api/pending',{auth:{username:coach.username,password:coach._pwd},type:'delete',details:{studentId:id,studentName:s.name}});toast('删除申请已提交审核','ok')}catch(e){toast('提交失败','no')}})}
+
+// Parent
+async function doPQuery(){const q=document.getElementById('pSearch').value.trim();if(!q){toast('请输入姓名','wn');return}try{await loadDB();const m=db.students.filter(s=>s.name.includes(q));document.getElementById('pResult').style.display='none';document.getElementById('pNoRes').style.display='none';document.getElementById('pMatchList').style.display='none';if(!m.length){document.getElementById('pNoRes').style.display='block';return}if(m.length===1){showPDetail(m[0])}else{document.getElementById('pMatchList').style.display='block';document.getElementById('pMatchList').innerHTML=m.map(s=>{const ed=expDisplay(s);return '<div class="mi" onclick="showPDetail(db.students.find(x=>x.id===\''+s.id+'\'))"><div><div class="mn">'+s.name+' '+typeTag(stuType(s),s.billing)+'</div><div class="mid">'+s.id+'</div></div><div class="mc">'+ed.html+'</div></div>'}).join('')}}catch(e){toast('查询失败','no')}}
+function showPDetail(s){document.getElementById('pMatchList').style.display='none';document.getElementById('pNoRes').style.display='none';document.getElementById('pResult').style.display='block';parentEditId=s.id;document.getElementById('pName').textContent=s.name;document.getElementById('pId').textContent=s.id;document.getElementById('pType').textContent=stuType(s)+(stuType(s)==='提高班'?'-'+((s.billing||'monthly')==='monthly'?'月卡':'课时'):'');if(isMonthly(s)){document.getElementById('pClsRow').style.display='flex';document.getElementById('pClsRow').querySelector('.il').textContent='已上课时';document.getElementById('pCls').textContent=s.classes+' 节';document.getElementById('pExpRow').style.display='flex';document.getElementById('pExp').textContent=fmtExp(s.expiry)}else{document.getElementById('pClsRow').style.display='flex';document.getElementById('pClsRow').querySelector('.il').textContent='剩余课时';document.getElementById('pExpRow').style.display='none';if(s.totalClasses!=null&&s.totalClasses>0){document.getElementById('pCls').textContent=s.classes+'/'+s.totalClasses+' 节'}else{document.getElementById('pCls').textContent=s.classes+' 节'}}document.getElementById('pAge').textContent=s.age||'-';document.getElementById('pWeight').innerHTML=(s.weight||'-')+'<span class="ic-unit">kg</span>';document.getElementById('pHeight').innerHTML=(s.height||'-')+'<span class="ic-unit">cm</span>';document.getElementById('p200m').innerHTML=(s.run200m||'-')+'<span class="ic-unit">s</span>';document.getElementById('p500m').innerHTML=(s.run500m||'-')+'<span class="ic-unit">s</span>';document.getElementById('p1000m').innerHTML=(s.run1000m||'-')+'<span class="ic-unit">s</span>';document.getElementById('pFitness').innerHTML=(s.fitness||'-')+'<span class="ic-unit">小时</span>';document.getElementById('pTech').innerHTML=(s.tech||'-')+'<span class="ic-unit">小时</span>';document.getElementById('pStatus').textContent=s.trainStatus||'-';document.getElementById('pAdvFields').style.display=stuType(s)==='提高班'?'grid':'none';const recs=db.records.filter(r=>r.sid===s.id);const el=document.getElementById('pRecList'),em=document.getElementById('pRecEmpty');if(!recs.length){el.innerHTML='';em.style.display='block'}else{em.style.display='none';el.innerHTML=recs.map(r=>renderRI(r,'parent',true)).join('')}}
+
+
+let parentEditId=null;
+function showParentEditModal(){if(!parentEditId){const q=document.getElementById('pSearch').value.trim();const m=db.students.filter(s=>s.name.includes(q));if(m.length)parentEditId=m[0].id}if(!parentEditId)return;const s=db.students.find(x=>x.id===parentEditId);if(!s)return;document.getElementById('peAge').value=s.age||'';document.getElementById('peWeight').value=s.weight||'';document.getElementById('peHeight').value=s.height||'';document.getElementById('peAdvFields').style.display=stuType(s)==='提高班'?'block':'none';document.getElementById('moParentEdit').classList.add('on')}
+async function doParentEditSave(){if(!parentEditId)return;const s=db.students.find(x=>x.id===parentEditId);if(!s)return;const saveBtn=event.target;const origText=saveBtn.textContent;saveBtn.disabled=true;saveBtn.textContent='保存中…';saveBtn.style.opacity='0.6';if(stuType(s)==='提高班'){s.age=parseInt(document.getElementById('peAge').value)||0||undefined;s.weight=parseFloat(document.getElementById('peWeight').value)||0||undefined;s.height=parseFloat(document.getElementById('peHeight').value)||0||undefined;}try{await save({students:db.students});saveBtn.disabled=false;saveBtn.textContent=origText;saveBtn.style.opacity='1';clsMo('moParentEdit');toast('已保存','ok');await loadDB();showPDetail(db.students.find(x=>x.id===parentEditId))}catch(e){toast('保存失败','no');saveBtn.disabled=false;saveBtn.textContent=origText;saveBtn.style.opacity='1'}}
+// ===== Manager / Performance system =====
+async function doMgrLogin(){const p=document.getElementById('mPwd').value;const m=document.getElementById('mgrNameSelect').value;if(!m){toast('请选择店长','wn');return}if(!p){toast('请输入密码','wn');return}const btn=document.querySelector('#pgMgrLogin .btn-p');if(btn){btn.disabled=true;btn.textContent='登录中...'}try{const r=await api('POST','/api/perf/login',{name:m,password:p});if(r.ok){mgrPwd=p;currentMgrName=m;MANAGERS=await readManagersForStore();toast('欢迎'+m,'ok');enterMgr()}}catch(e){toast(e.message,'no')}finally{if(btn){btn.disabled=false;btn.textContent='登 录'}}}
+function doMgrLogout(){mgrPwd='';goLand()}
+async function enterMgr(){go('pgMgr');const y=document.getElementById('mgrYear');const mo=document.getElementById('mgrMonth');const d=new Date();const cy=d.getFullYear();const cmo=d.getMonth()+1;for(let i=cy;i<=cy+2;i++){const o=document.createElement('option');o.value=i;o.textContent=i+(i===cy?' (今年)':'');y.appendChild(o)}for(let i=1;i<=12;i++){const o=document.createElement('option');o.value=i;o.textContent=i+'月';if(i===cmo)o.selected=true;mo.appendChild(o)}y.value=cy;document.getElementById('mgrBadge').textContent=currentMgrName;try{const[dataRes,perfRes]=await Promise.all([api('GET','/api/data'),api('GET','/api/perf')]);storeCoachNames=(dataRes.coaches||[]).map(c=>c.name);perfData=perfRes;migrateOldPerfData();const mc=getMC();document.getElementById('ptRate').value=mc.partTimeRate||20;document.getElementById('mFixedCost').value=mc.fixedCost||5500;document.getElementById('mShoeJunior').value=mc.shoeCostJunior||195;document.getElementById('mShoeSenior').value=mc.shoeCostSenior||750;calcAll();renderPerfList();renderCoachIncome();renderPartTime();renderProspectList()}catch(e){toast('加载失败','no');console.error(e)}}
+async function loadPerf(){perfData=await api('GET','/api/perf');return perfData}
+async function readManagersForStore(){try{return await fetch('/api/managers?store='+currentStore).then(r=>r.json())}catch(e){return[]}}
+async function savePerf(updates){await api('PUT','/api/perf',{name:currentMgrName,password:mgrPwd,updates})}
+function getMonthKey(){const y=document.getElementById('mgrYear');const m=document.getElementById('mgrMonth');if(y&&m)return y.value+'-'+String(m.value).padStart(2,'0');const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function getMC(){const mk=getMonthKey();if(!perfData.monthlyConfig)perfData.monthlyConfig={};if(!perfData.monthlyConfig[mk])perfData.monthlyConfig[mk]={};return perfData.monthlyConfig[mk]}
+function migrateOldPerfData(){if(!perfData.monthlyConfig&&(perfData.partTimeHours||perfData.coachBaseSalary||perfData.fixedCost||perfData.partTimeRate)){const mk=getMonthKey();perfData.monthlyConfig={};perfData.monthlyConfig[mk]={partTimeHours:perfData.partTimeHours||{},coachBaseSalary:perfData.coachBaseSalary||{},fixedCost:perfData.fixedCost||5500,partTimeRate:perfData.partTimeRate||20};delete perfData.partTimeHours;delete perfData.coachBaseSalary;delete perfData.fixedCost;delete perfData.partTimeRate}}
+
+async function refreshPerf(){try{await loadPerf();migrateOldPerfData();const mc=getMC();document.getElementById('ptRate').value=mc.partTimeRate||20;document.getElementById('mFixedCost').value=mc.fixedCost||5500;document.getElementById('mShoeJunior').value=mc.shoeCostJunior||195;document.getElementById('mShoeSenior').value=mc.shoeCostSenior||750;calcAll();renderPerfList();renderCoachIncome();renderPartTime();renderProspectList()}catch(e){toast('加载失败','no');console.error(e)}}
+
+function calcAll(){if(!perfData)return;const mk=getMonthKey();const mc=getMC();const monthRecs=(perfData.perfRecords||[]).filter(r=>r.date&&r.date.startsWith(mk));const rev=monthRecs.reduce((s,r)=>s+(parseFloat(r.amount)||0),0);perfData.monthlyRevenue[mk]=rev;const totalComm=monthRecs.reduce((s,r)=>s+(parseFloat(r.commission)||0),0);const shoeJr=parseFloat(document.getElementById('mShoeJunior').value)||195;const shoeSr=parseFloat(document.getElementById('mShoeSenior').value)||750;const shoeCost=monthRecs.reduce((s,r)=>{if(r.shoe==='初级')return s+shoeJr;if(r.shoe==='中级')return s+shoeSr;return s},0);mc.shoeCostJunior=shoeJr;mc.shoeCostSenior=shoeSr;;const coachBaseTotal=Object.values(mc.coachBaseSalary||{}).reduce((s,v)=>s+(parseFloat(v)||0),0);const ptRate=parseFloat(document.getElementById('ptRate').value)||20;const ptTotal=Object.values(mc.partTimeHours||{}).reduce((s,h)=>s+(parseFloat(h)||0)*ptRate,0);const fc=parseFloat(document.getElementById('mFixedCost').value)||5500;mc.fixedCost=fc;const profit=rev-fc-totalComm-shoeCost-coachBaseTotal-ptTotal;document.getElementById('mRev').textContent=rev.toFixed(0);document.getElementById('mProfit').textContent=profit.toFixed(0);clearTimeout(window._revTimer);window._revTimer=setTimeout(async()=>{try{const mc2=getMC();await savePerf({monthlyRevenue:perfData.monthlyRevenue,monthlyConfig:perfData.monthlyConfig,partTimeRate:mc2.partTimeRate||20,fixedCost:mc2.fixedCost||5500,shoeCostJunior:mc2.shoeCostJunior||195,shoeCostSenior:mc2.shoeCostSenior||750})}catch(e){}},800)}
+
+function renderPerfList(){const mk=getMonthKey();const all=perfData.perfRecords||[];const recs=all.map((r,i)=>({r,oi:i})).sort((a,b)=>b.r.date.localeCompare(a.r.date));const el=document.getElementById('perfList'),em=document.getElementById('perfEmpty');if(!recs.length){el.innerHTML='';em.style.display='block';return}em.style.display='none';function rri(item){const r=item.r,oi=item.oi;const amt=r.amount||0;const amtColor=amt<0?'var(--no)':'var(--ok)';return'<div class="ri" style="cursor:pointer" onclick="editPerfRec('+oi+')"><div class="rd" style="background:var(--wn)"></div><div class="rm"><div class="rn">'+r.childName+' · '+r.courseType+(r.shoe!=='无'?' · '+r.shoe+'鞋':'')+'</div><div class="rmt">'+r.date+' · '+(r.coaches&&r.coaches.length>1?r.coaches.join(' & '):r.coach)+' · '+r.orderId+'</div></div><div style="text-align:right"><div style="font-size:13px;font-weight:600;color:'+amtColor+'">&yen;'+amt+'</div><div style="font-size:10px;color:var(--g400)">提成&yen;'+r.commission+'</div></div></div>'}const monthRecs=recs.filter(item=>item.r.date&&item.r.date.startsWith(mk));let html='';if(monthRecs.length){html+='<div style="font-size:12px;color:var(--g500);margin-bottom:6px">'+mk+' ('+monthRecs.length+'条)</div>';html+=monthRecs.map(item=>rri(item)).join('')}else{html+='<div style="font-size:12px;color:var(--g500);margin-bottom:6px">'+mk+' 暂无记录</div>'}el.innerHTML=html}
+function renderCoachIncome(){const mk=getMonthKey();const mc=getMC();const recs=(perfData.perfRecords||[]).filter(r=>r.date&&r.date.startsWith(mk));const coaches=(perfData.customCoaches||[]);const bases=mc.coachBaseSalary||{};const profit=parseFloat(document.getElementById('mProfit').textContent)||0;let coachHtml='';coaches.forEach(name=>{if(MANAGERS.find(m=>m.name===name))return;const base=parseFloat(bases[name])||0;const comm=recs.reduce((s,r)=>{const cs=r.coaches||[r.coach];if(cs.includes(name)){const ci=cs.indexOf(name);const cms=r.commissions||[];return s+(parseFloat(cms[ci])||(ci===0?parseFloat(r.commission)||0:0));}return s},0);coachHtml+='<div class="irow"><span class="il">'+name+'</span><span class="iv">底薪<input type="number" value="'+base+'" data-coach="'+name+'" class="sal-input" style="width:56px;padding:2px 4px;border:1px solid var(--g200);border-radius:4px;font-size:12px;height:24px;margin:0 4px;text-align:center"> + 提成'+comm.toFixed(0)+' = <strong>'+(base+comm).toFixed(0)+'</strong><button onclick="removeCoach(\''+name+'\')" style="background:none;border:none;color:var(--no);font-size:14px;cursor:pointer;padding:0 2px;margin-left:4px">✕</button></span></div>'});document.getElementById('coachIncomeList').innerHTML=coachHtml||'<div class="empty">暂无教练</div>';document.getElementById('coachEditor').innerHTML='';let mgrHtml='';MANAGERS.forEach(m=>{const base=parseFloat(bases[m.name])||0;const comm=recs.reduce((s,r)=>{const cs=r.coaches||[r.coach];if(cs.includes(m.name)){const ci=cs.indexOf(m.name);const cms=r.commissions||[];return s+(parseFloat(cms[ci])||(ci===0?parseFloat(r.commission)||0:0));}return s},0);const pShare=Math.max(0,profit)*m.share;const total=base+comm+pShare;const isCurrent=m.name===currentMgrName;mgrHtml+='<div class="irow" style="'+(isCurrent?'background:var(--pb);border-radius:8px;padding:8px 10px;margin:-4px -4px 4px':'')+'"><span class="il" style="font-weight:600">'+m.name+'</span><span class="iv">底薪'+base+' + 提成'+comm.toFixed(0)+' + 利润×'+m.share+'('+pShare.toFixed(0)+') = <strong style="color:var(--p)">'+total.toFixed(0)+'</strong></span></div>'});document.getElementById('mgrIncomeList').innerHTML=mgrHtml}
+
+async function addCoach(){const name=document.getElementById('newCoachName').value.trim();if(!name){toast('请输入名字','wn');return}const coaches=perfData.customCoaches||[];if(coaches.includes(name)){toast('已存在','wn');return}coaches.push(name);try{await savePerf({customCoaches:coaches});document.getElementById('newCoachName').value='';toast('已添加','ok');refreshPerf()}catch(e){toast('添加失败','no')}}
+async function removeCoach(name){const coaches=(perfData.customCoaches||[]).filter(n=>n!==name);try{await savePerf({customCoaches:coaches,monthlyConfig:perfData.monthlyConfig});toast('已删除','ok');refreshPerf()}catch(e){toast('删除失败','no')}}
+async function saveCoachSalary(){const inputs=document.querySelectorAll('.sal-input');const sal={};inputs.forEach(inp=>{sal[inp.dataset.coach]=parseFloat(inp.value)||0});const mc=getMC();mc.coachBaseSalary=sal;try{await savePerf({monthlyConfig:perfData.monthlyConfig});toast('底薪已保存','ok');refreshPerf()}catch(e){toast('保存失败','no');saveBtn.disabled=false;saveBtn.textContent=origText;saveBtn.style.opacity='1'}}
+
+function renderPartTime(){const mc=getMC();const pts=mc.partTimeHours||{};const rate=parseFloat(document.getElementById('ptRate').value)||20;const el=document.getElementById('ptList');if(!Object.keys(pts).length){el.innerHTML='<div class="empty">暂无兼职</div>';return}let html='';for(const[name,hours] of Object.entries(pts)){const pay=(parseFloat(hours)||0)*rate;html+='<div class="irow"><span class="il">'+name+' ('+hours+'时×'+rate+')</span><span class="iv">&yen;'+pay.toFixed(0)+' <button onclick="removePartTime(\''+name+'\')" style="background:none;border:none;color:var(--no);font-size:14px;cursor:pointer;padding:0 2px">✕</button></span></div>'}el.innerHTML=html}
+async function removePartTime(name){if(!confirm('删除兼职 '+name+'？'))return;const mc=getMC();if(mc.partTimeHours)delete mc.partTimeHours[name];try{await savePerf({monthlyConfig:perfData.monthlyConfig});toast('已删除','ok');refreshPerf()}catch(e){toast('删除失败','no')}}
+
+async function addPartTime(){const name=document.getElementById('ptName').value.trim(),hours=parseFloat(document.getElementById('ptHours').value)||0;if(!name){toast('请输入姓名','wn');return}const mc=getMC();if(!mc.partTimeHours)mc.partTimeHours={};mc.partTimeHours[name]=hours;mc.partTimeRate=parseFloat(document.getElementById('ptRate').value)||20;try{await savePerf({monthlyConfig:perfData.monthlyConfig,partTimeRate:mc.partTimeRate});document.getElementById('ptName').value='';document.getElementById('ptHours').value='';toast('已添加','ok');refreshPerf()}catch(e){toast('添加失败','no')}}
+
+function renderProspectList(){const mk=getMonthKey();if(!perfData.prospectMemos)perfData.prospectMemos={};const memos=perfData.prospectMemos[mk]||[];const el=document.getElementById("prospectList"),em=document.getElementById("prospectEmpty");if(!memos.length){el.innerHTML="";em.style.display="block";return}em.style.display="none";let html="";memos.forEach((m,i)=>{html+=`<div class="ri"><div class="rd" style="background:var(--wn)"></div><div class="rm"><div class="rn">${m.wechat}${m.age?" · "+m.age+"岁":""}</div><div class="rmt">${m.note||""}</div></div><button onclick="deleteProspect(${i})" style="background:none;border:none;color:var(--no);font-size:14px;cursor:pointer;padding:0 2px;flex-shrink:0">✕</button></div>`});el.innerHTML=html}
+function showProspectModal(){document.getElementById("pWechat").value="";document.getElementById("pAge").value="";document.getElementById("pNote").value="";document.getElementById("moProspect").classList.add("on")}
+async function doAddProspect(){const wechat=document.getElementById("pWechat").value.trim(),age=parseInt(document.getElementById("pAge").value)||0,note=document.getElementById("pNote").value.trim();if(!wechat){toast("请填写微信名","wn");return}const mk=getMonthKey();if(!perfData.prospectMemos)perfData.prospectMemos={};if(!perfData.prospectMemos[mk])perfData.prospectMemos[mk]=[];perfData.prospectMemos[mk].push({wechat,age,note,time:new Date().toISOString()});try{await savePerf({prospectMemos:perfData.prospectMemos});clsMo("moProspect");toast("已添加","ok");renderProspectList()}catch(e){toast("添加失败","no")}}
+async function deleteProspect(idx){const mk=getMonthKey();if(!perfData.prospectMemos||!perfData.prospectMemos[mk])return;if(!confirm("删除此意向客户？"))return;perfData.prospectMemos[mk].splice(idx,1);try{await savePerf({prospectMemos:perfData.prospectMemos});toast("已删除","ok");renderProspectList()}catch(e){toast("删除失败","no")}}
+function showReportModal(){window._editPerfIdx=null;const mk=getMonthKey();const [ym,mm]=mk.split('-');const today=ym+'-'+mm+'-'+new Date().getDate().toString().padStart(2,'0');const coaches=(perfData.customCoaches||[]);const mgrOpts=MANAGERS.map(m=>'<option value="'+m.name+'">'+m.name+'</option>').join('');const coachOpts='<option value="">不选</option>'+mgrOpts+coaches.map(c=>'<option value="'+c+'">'+c+'</option>').join('');document.getElementById('rptDelBtn').style.display='none';document.getElementById('rptModalBody').innerHTML='<div class="fg"><label>日期</label><input id="rptDate" type="date" value="'+today+'"></div><div class="fg"><label>订单编号</label><input id="rptOrderId" placeholder="订单编号"></div><div class="fg"><label>金额（可填负数）</label><input id="rptAmount" type="number" placeholder="金额，支持负数"></div><div class="fg"><label>课程类型</label><input id="rptCourse" placeholder="填写课程类型"></div><div class="fg"><label>搭配鞋子</label><select id="rptShoe"><option value="无">无</option><option value="初级">初级鞋</option><option value="中级">中级鞋</option></select></div><div class="fg"><label>小朋友名字</label><input id="rptChild" placeholder="小朋友名字"></div><div class="fg"><label>提成所属1</label><select id="rptCoach1">'+coachOpts+'</select></div><div class="fg"><label>提成1金额</label><input id="rptComm1" type="number" placeholder="教练1提成金额"></div><div class="fg"><label>提成所属2</label><select id="rptCoach2">'+coachOpts+'</select></div><div class="fg"><label>提成2金额</label><input id="rptComm2" type="number" placeholder="教练2提成金额（可选）"></div>';document.getElementById('moReport').classList.add('on');}
+function editPerfRec(idx){const r=perfData.perfRecords[idx];if(!r)return;const today=r.date;const coaches=(perfData.customCoaches||[]);const mgrOpts=MANAGERS.map(m=>'<option value="'+m.name+'">'+m.name+'</option>').join('');const coachOpts='<option value="">不选</option>'+mgrOpts+coaches.map(c=>'<option value="'+c+'">'+c+'</option>').join('');const c1=(r.coaches&&r.coaches[0])||r.coach||'';const c2=(r.coaches&&r.coaches[1])||'';document.getElementById('rptDelBtn').style.display='none';document.getElementById('rptModalBody').innerHTML='<div class="fg"><label>日期</label><input id="rptDate" type="date" value="'+today+'"></div><div class="fg"><label>订单编号</label><input id="rptOrderId" value="'+(r.orderId||'')+'"></div><div class="fg"><label>金额（可填负数）</label><input id="rptAmount" type="number" value="'+(r.amount||'')+'"></div><div class="fg"><label>课程类型</label><input id="rptCourse" value="'+(r.courseType||'')+'"></div><div class="fg"><label>搭配鞋子</label><select id="rptShoe"><option value="无"'+(r.shoe==='无'?' selected':'')+'>无</option><option value="初级"'+(r.shoe==='初级'?' selected':'')+'>初级鞋</option><option value="中级"'+(r.shoe==='中级'?' selected':'')+'>中级鞋</option></select></div><div class="fg"><label>小朋友名字</label><input id="rptChild" value="'+(r.childName||'')+'"></div><div class="fg"><label>提成所属1</label><select id="rptCoach1">'+coachOpts+'</select></div><div class="fg"><label>提成1金额</label><input id="rptComm1" type="number"></div><div class="fg"><label>提成所属2</label><select id="rptCoach2">'+coachOpts+'</select></div><div class="fg"><label>提成2金额</label><input id="rptComm2" type="number"></div>';document.getElementById('rptCoach1').value=c1;document.getElementById('rptComm1').value=(r.commissions&&r.commissions[0])||(r.coaches&&r.coaches.length===1?r.commission:0);document.getElementById('rptCoach2').value=c2;document.getElementById('rptComm2').value=(r.commissions&&r.commissions[1])||0;window._editPerfIdx=idx;document.getElementById('rptDelBtn').style.display='block';document.getElementById('moReport').classList.add('on');}
+
+async function doReport(){const date=document.getElementById('rptDate').value,orderId=document.getElementById('rptOrderId').value.trim(),amount=parseFloat(document.getElementById('rptAmount').value)||0,courseType=document.getElementById('rptCourse').value.trim(),shoe=document.getElementById('rptShoe').value,childName=document.getElementById('rptChild').value.trim(),coach1=document.getElementById('rptCoach1').value,coach2=document.getElementById('rptCoach2').value,comm1=parseFloat(document.getElementById('rptComm1').value)||0,comm2=coach2?parseFloat(document.getElementById('rptComm2').value)||0:0;if(!date||!orderId||!childName){toast('请填写完整信息','wn');return}if(!coach1){toast('请选择提成所属1','wn');return}const coaches=[coach1,coach2].filter(Boolean);const commission=comm1+comm2;const commissions=[comm1];if(coach2)commissions.push(comm2);toast('提交中...','wn');const rec={date,orderId,amount,courseType,shoe,childName,commission,commissions,coach:coaches[0],coaches,time:nowLocal()};if(window._editPerfIdx!==undefined&&window._editPerfIdx!==null){perfData.perfRecords[window._editPerfIdx]=rec;window._editPerfIdx=null}else{perfData.perfRecords.push(rec);}try{await savePerf({perfRecords:perfData.perfRecords});clsMo('moReport');toast('业绩已提交','ok');refreshPerf()}catch(e){toast('提交失败','no')}}
+
+// Common utils
+function toast(m,t){const c=document.getElementById('tc'),e=document.createElement('div');e.className='tst '+(t||'');e.textContent=m;c.appendChild(e);setTimeout(()=>e.remove(),2400)}
+function showConf(title,body,cb){document.getElementById('confTitle').textContent=title;document.getElementById('confBody').innerHTML=body;confCb=cb;document.getElementById('moConf').classList.add('on')}
+function doConf(){if(confCb)confCb();clsMo('moConf')}
+function clsMo(id){document.getElementById(id).classList.remove('on');if(id==='moConf')confCb=null}
+
+// ===== Admin Management =====
+const ADMIN_PWD='123456';let adminStore='henglicheng';const ADMIN_STORE_MAP={'henglicheng':'恒力城','taihe':'泰禾'};
+let adminAuth=false,adminCoaches=[],adminEditOldUser=null;
+
+function goAdminLogin(){go('pgAdminLogin');document.getElementById('adminPwd').value=''}
+function doAdminLogin(){const p=document.getElementById('adminPwd').value;if(p!==ADMIN_PWD){toast('密码错误','no');return}adminAuth=true;const btn=document.querySelector('#pgAdminLogin .btn-p');if(btn){btn.disabled=true;btn.textContent='登录中...'}enterAdmin().finally(()=>{if(btn){btn.disabled=false;btn.textContent='登 录'}})}
+
+async function enterAdmin(){
+  go('pgAdmin');
+  const label=document.getElementById('adminStoreLabel');
+  if(label)label.textContent=STORE_NAMES[adminStore]||adminStore;
+  try{
+    const [coaches,recs,mgrs,pending]=await Promise.all([
+      fetch('/api/admin/coaches?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json()),
+      fetch('/api/admin/records?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json()),
+      fetch('/api/admin/managers?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json()),
+      fetch('/api/admin/pending?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json())
+    ]);
+    adminCoaches=coaches;
+    renderAdminCoaches(coaches);
+    renderAdminMgrs(mgrs);
+    renderAdminRecs(recs);
+    renderAdminPending(pending);
+  }catch(e){toast('加载失败','no');console.error(e)}
+  startAdminAutoRefresh();
+}
+
+// 账号管理界面：每15秒自动刷新审核列表
+function startAdminAutoRefresh(){
+  if(_adminPendingTimer)return;
+  _adminPendingTimer=setInterval(function(){loadAdminPending()},15000);
+}
+function stopAdminAutoRefresh(){
+  if(_adminPendingTimer){clearInterval(_adminPendingTimer);_adminPendingTimer=null}
+}
+function renderAdminCoaches(coaches){
+  const el=document.getElementById('adminCoachList');
+  document.getElementById('adminCoachCount').textContent='('+coaches.length+'人)';
+  const SN={'henglicheng':'恒力城','baolong':'宝龙','taihe':'泰禾','yangguang':'阳光天地'};
+  const show=coaches.slice(0,2),hidden=coaches.slice(2);
+  let h=show.map((c,i)=>'<div class="admin-item"><div class="admin-item-name">'+c.name+'</div><div class="admin-item-stores">'+(c.stores?c.stores.map(s=>SN[s]||s).join('、'):'')+'</div><div class="admin-item-info">账号: '+c.username+'</div><div class="admin-item-info">密码: '+c.password+'</div><div class="admin-item-acts"><button class="btn btn-o btn-sm" onclick="adminEditCoach('+i+')">编辑</button><button class="btn btn-no btn-sm" style="background:var(--no);color:#fff" onclick="adminDelCoach('+i+')">删除</button></div></div>').join('');
+  if(hidden.length){h+='<div id="coachMore" style="display:none">'+hidden.map((c,i)=>'<div class="admin-item"><div class="admin-item-name">'+c.name+'</div><div class="admin-item-stores">'+(c.stores?c.stores.map(s=>SN[s]||s).join('、'):'')+'</div><div class="admin-item-info">账号: '+c.username+'</div><div class="admin-item-info">密码: '+c.password+'</div><div class="admin-item-acts"><button class="btn btn-o btn-sm" onclick="adminEditCoach('+(i+2)+')">编辑</button><button class="btn btn-no btn-sm" style="background:var(--no);color:#fff" onclick="adminDelCoach('+(i+2)+')">删除</button></div></div>').join('')+'</div>';h+='<button class="btn btn-o btn-sm" style="width:100%;margin-top:8px" onclick="this.previousElementSibling.style.display=\'block\';this.style.display=\'none\'">展开全部 ('+hidden.length+'人)</button>';}
+  if(!coaches.length)h='<div class="empty">暂无教练</div>';
+  el.innerHTML=h;
+}
+
+function getCoachStores(){const s=[];if(document.getElementById('ceS1').checked)s.push('henglicheng');if(document.getElementById('ceS2').checked)s.push('baolong');if(document.getElementById('ceS3').checked)s.push('taihe');if(document.getElementById('ceS4').checked)s.push('yangguang');return s;}
+
+function adminShowAddCoach(){
+  adminEditOldUser=null;
+  document.getElementById('coachEditTitle').textContent='添加教练';
+  document.getElementById('ceUser').value='';
+  document.getElementById('cePwd').value='123456';
+  document.getElementById('ceName').value='';
+  document.getElementById('ceS1').checked=true;document.getElementById('ceS2').checked=true;document.getElementById('ceS3').checked=true;document.getElementById('ceS4').checked=true;
+  document.getElementById('moCoachEdit').classList.add('on');
+}
+
+function adminEditCoach(idx){
+  const c=adminCoaches[idx];if(!c)return;
+  adminEditOldUser=c.username;
+  document.getElementById('coachEditTitle').textContent='编辑教练';
+  document.getElementById('ceUser').value=c.username;
+  document.getElementById('cePwd').value=c.password;
+  document.getElementById('ceName').value=c.name;
+  document.getElementById('ceS1').checked=(c.stores||[]).includes('henglicheng');
+  document.getElementById('ceS2').checked=(c.stores||[]).includes('baolong');
+  document.getElementById('ceS3').checked=(c.stores||[]).includes('taihe');
+  document.getElementById('ceS4').checked=(c.stores||[]).includes('yangguang');
+  document.getElementById('moCoachEdit').classList.add('on');
+}
+
+async function adminSaveCoach(){
+  const s=adminStore;
+  const username=document.getElementById('ceUser').value.trim();
+  const password=document.getElementById('cePwd').value.trim();
+  const name=document.getElementById('ceName').value.trim();
+  if(!username||!password||!name){toast('请填写完整','wn');return}
+  try{
+    if(adminEditOldUser){
+      const cr=await fetch('/api/admin/coaches',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:ADMIN_PWD,oldUsername:adminEditOldUser,username,password,name,store:s})});
+      if(!cr.ok){const e=await cr.json().catch(()=>({error:'更新失败'}));toast(e.error||'更新失败','no');return}
+      toast('已更新','ok');loadAdminCoaches();return;
+    }else{
+      const cr2=await fetch('/api/admin/coaches',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:ADMIN_PWD,username,password,name,store:s})});
+      if(!cr2.ok){const e=await cr2.json().catch(()=>({error:'添加失败'}));toast(e.error||'添加失败','no');return}
+      toast('已添加','ok');
+    }
+    clsMo('moCoachEdit');
+    loadAdminCoaches();
+  }catch(e){toast('操作失败','no')}
+}
+
+async function adminDelCoach(idx){
+  const c=adminCoaches[idx];if(!c)return;
+  if(!confirm('确定删除教练 '+c.name+'？'))return;
+  try{
+    const dr=await fetch('/api/admin/coaches?pwd='+ADMIN_PWD+'&username='+c.username+'&store='+adminStore,{method:'DELETE'});if(!dr.ok){toast('删除失败','no');return}
+    toast('已删除','ok');loadAdminCoaches();
+  }catch(e){toast('删除失败','no')}
+}
+
+let adminMgrs=[];
+function renderAdminMgrs(mgrs){
+  adminMgrs=mgrs;
+  const el=document.getElementById('adminMgrList');
+  document.getElementById('adminMgrCount').textContent='('+mgrs.length+'人)';
+  const SN={'henglicheng':'恒力城','baolong':'宝龙','taihe':'泰禾','yangguang':'阳光天地'};
+  const show=mgrs.slice(0,2),hidden=mgrs.slice(2);
+  const renderItem=(m,i)=>{const sharesHtml=m.stores?m.stores.map(s=>SN[s]+': '+((m.shares&&m.shares[s]||m.share||0)*100)+'%').join('、'):(m.share?(m.share*100+'%'):'未设置');return '<div class="admin-item"><div class="admin-item-name">'+m.name+'</div><div class="admin-item-info">密码: '+m.password+'</div><div class="admin-item-info">分成: '+sharesHtml+'</div><div class="admin-item-acts"><button class="btn btn-o btn-sm" onclick="adminEditMgr('+i+')">编辑</button><button class="btn btn-no btn-sm" style="background:var(--no);color:#fff" onclick="adminDelMgr('+i+')">删除</button></div></div>'};
+  let h=show.map((m,i)=>renderItem(m,i)).join('');
+  if(hidden.length){h+='<div id="mgrMore" style="display:none">'+hidden.map((m,i)=>renderItem(m,i+2)).join('')+'</div>';h+='<button class="btn btn-o btn-sm" style="width:100%;margin-top:8px" onclick="this.previousElementSibling.style.display=\'block\';this.style.display=\'none\'">展开全部 ('+hidden.length+'人)</button>';}
+  if(!mgrs.length)h='<div class="empty">暂无店长</div>';
+  el.innerHTML=h;
+}
+function adminShowAddMgr(){
+  adminEditOldMgrName=null;
+  document.getElementById('mgrEditTitle').textContent='添加店长';
+  document.getElementById('meName').value='';
+  document.getElementById('mePwd').value='';
+  document.getElementById('meShare').value='0.3';
+  document.getElementById('moMgrEdit').classList.add('on');
+}
+function adminEditMgr(idx){
+  const m=adminMgrs[idx];if(!m)return;
+  adminEditOldMgrName=m.name;
+  document.getElementById('mgrEditTitle').textContent='编辑店长';
+  document.getElementById('meName').value=m.name;
+  document.getElementById('mePwd').value=m.password;
+  const ms=m.shares||{};
+  document.getElementById('meShare').value=ms[adminStore]!=null?ms[adminStore]:(m.share||'');
+  document.getElementById('moMgrEdit').classList.add('on');
+}
+function getMgrStores(){
+  const s=[];
+  if(document.getElementById('meS1').checked)s.push('henglicheng');
+  if(document.getElementById('meS2').checked)s.push('baolong');
+  if(document.getElementById('meS3').checked)s.push('taihe');
+  if(document.getElementById('meS4').checked)s.push('yangguang');
+  return s;
+}
+async function adminSaveMgr(){
+  const name=document.getElementById('meName').value.trim();
+  const password=document.getElementById('mePwd').value.trim();
+  const shareInput=document.getElementById('meShare').value;
+  const shares={};
+  if(shareInput)shares[adminStore]=parseFloat(shareInput)||0;
+  if(!name){alert('请输入姓名');return;}
+  if(!password&&!adminEditOldMgrName){alert('请输入密码');return;}
+  const body={pwd:adminPwd,name,password:password||'',shares,stores:[adminStore],store:adminStore};
+  const url='/api/admin/managers';
+  const method=adminEditOldMgrName?'PUT':'POST';
+  if(adminEditOldMgrName)body.oldName=adminEditOldMgrName;
+  fetch(url,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.error){alert(d.error);return;}
+    alert(adminEditOldMgrName?'修改成功':'添加成功');
+    clsMo('moMgrEdit');
+    loadAdminMgrs();
+  })
+  .catch(e=>alert('保存失败'));
+}
+function adminDelMgr(idx){
+  const m=adminMgrs[idx];if(!m)return;
+  if(!confirm('确定删除店长「'+m.name+'」？'))return;
+  fetch('/api/admin/managers?pwd='+encodeURIComponent(adminPwd)+'&name='+encodeURIComponent(m.name)+'&store='+adminStore,{method:'DELETE'})
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.error){alert(d.error);return;}
+    alert('删除成功');
+    loadAdminMgrs();
+  })
+  .catch(e=>alert('删除失败'));
+}
+
+function loadAdminCoaches(){fetch('/api/admin/coaches?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json()).then(d=>{adminCoaches=d;renderAdminCoaches(d)}).catch(()=>toast('加载失败','no'))}
+function loadAdminMgrs(){fetch('/api/admin/managers?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json()).then(d=>{renderAdminMgrs(d)}).catch(()=>toast('加载失败','no'))}
+function loadAdminPending(){fetch('/api/admin/pending?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json()).then(d=>renderAdminPending(d)).catch(()=>toast('加载失败','no'))}
+function loadAdminRecs(){fetch('/api/admin/records?pwd='+ADMIN_PWD).then(r=>r.json()).then(d=>renderAdminRecs(d)).catch(()=>toast('加载失败','no'))}
+
+function renderAdminPending(items){
+  const el=document.getElementById('adminPendingList');
+  document.getElementById('adminPendingCount').textContent='('+items.length+'条)';
+  if(!items.length){el.innerHTML='<div class="empty">暂无待审核</div>';return}
+  const SN={'henglicheng':'恒力城','baolong':'宝龙','taihe':'泰禾','yangguang':'阳光天地'};
+  el.innerHTML=items.map(p=>{
+    let desc='';
+    if(p.type==='charge')desc='充值 <strong>'+p.details.n+'</strong> 节';
+    else if(p.type==='renew')desc='修改到期日至 <strong>'+(p.details.newExpiry||p.details.n+(p.details.unit==='天'?'天':'个月'))+'</strong>';
+    else if(p.type==='regDate')desc='修改报名日期至 <strong>'+p.details.newRegDate+'</strong>';else if(p.type==='delete')desc='<strong style=color:var(--no)>删除</strong> 学员';else if(p.type==='add')desc='添加学员 <strong>'+p.details.student.name+'</strong>'+(p.details.student.classes>0?'（初始'+p.details.student.classes+'节）':'');
+    return '<div class="admin-item"><div class="admin-item-top"><span class="admin-item-name">'+(p.details.studentName||p.details.student.name)+'</span></div><div class="admin-item-info">'+desc+'</div><div class="admin-item-info">'+p.coach+' · '+SN[p.store]+' · '+p.time+'</div><div class="admin-item-acts"><button class="btn btn-ok btn-sm" onclick="approvePending(\''+p.id+'\')">通过</button><button class="btn btn-no btn-sm" onclick="rejectPending(\''+p.id+'\')">拒绝</button></div></div>';
+  }).join('');
+}
+async function approvePending(id){
+  const btn=event.target;const origText=btn.textContent;btn.disabled=true;btn.textContent='处理中…';btn.style.opacity='0.6';
+  try{
+    const r=await fetch('/api/admin/pending/'+id+'/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:ADMIN_PWD,store:adminStore})});
+    if(!r.ok){const e=await r.json().catch(()=>({error:'审批失败'}));toast(e.error||'审批失败','no');btn.disabled=false;btn.textContent=origText;btn.style.opacity='1';return}
+    const result=await r.json().catch(()=>({}));
+    toast(result.warn||'已通过','ok');
+  }catch(e){toast('审批失败','no');btn.disabled=false;btn.textContent=origText;btn.style.opacity='1';return}
+  loadAdminPending();loadAdminRecs();
+}
+async function rejectPending(id){
+  if(!confirm('确定拒绝此申请？'))return;const btn=event.target;const origText=btn.textContent;btn.disabled=true;btn.textContent='处理中…';btn.style.opacity='0.6';
+  try{
+    const r=await fetch('/api/admin/pending/'+id+'/reject',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:ADMIN_PWD,store:adminStore})});
+    if(!r.ok){toast('拒绝失败','no');btn.disabled=false;btn.textContent=origText;btn.style.opacity='1';return}
+    toast('已拒绝','ok');
+  }catch(e){toast('拒绝失败','no');btn.disabled=false;btn.textContent=origText;btn.style.opacity='1';return}
+  loadAdminPending();
+}
+
+function renderAdminRecs(recs){
+  const el=document.getElementById('adminRecList');
+  document.getElementById('adminRecCount').textContent='('+recs.length+'条)';
+  const SN={'henglicheng':'恒力城','baolong':'宝龙','taihe':'泰禾','yangguang':'阳光天地'};
+  const renderItem=r=>{const isRenew=r.type==='续';return '<div class="ri"><div class="rd" style="background:'+(isRenew?'var(--adv)':'var(--ok)')+'"></div><div class="rm"><div class="rn">'+(r.sname||'')+' '+(isRenew?'修改到期日至 '+r.after:(r.n===0&&r.note?r.note:'充'+r.n+'节'))+'</div><div class="rmt">'+(r.coach||'')+' · '+(SN[r._store]||r._store||'')+' · '+(r.time||'')+'</div></div><div class="rb '+(isRenew?'rb-p':'rb-ok')+'">'+(isRenew?'续':'充')+'</div><button class="btn btn-no btn-sm" style="background:var(--no);color:#fff;margin-left:auto;padding:2px 8px;font-size:12px" onclick="adminDelRec(\''+r._store+'\',\''+r.sid+'\',\''+r.time+'\')">×</button></div>'};
+  const show=recs.slice(0,5);
+  const hidden=recs.slice(5);
+  let h=show.map(r=>renderItem(r)).join('');
+  if(hidden.length){
+    h+='<div id="adminRecMore" style="display:none">'+hidden.map(r=>renderItem(r)).join('')+'</div>';
+    h+='<button class="btn btn-o btn-sm" style="width:100%;margin-top:8px" onclick="this.previousElementSibling.style.display=\'block\';this.style.display=\'none\'">展开全部 ('+hidden.length+'条)</button>';
+  }
+  if(!recs.length)h='<div class="empty">暂无充值记录</div>';
+  el.innerHTML=h;
+}
+async function adminDelRec(store,sid,time){
+  if(!confirm('确定删除该充值记录？'))return;
+  try{
+    const r=await fetch('/api/admin/records?pwd='+ADMIN_PWD+'&store='+store+'&sid='+sid+'&time='+encodeURIComponent(time),{method:'DELETE'});
+    if(!r.ok){const e=await r.json().catch(()=>({error:'删除失败'}));toast(e.error||'删除失败','no');return}
+    toast('已删除','ok');loadAdminRecs();
+  }catch(e){toast('删除失败','no')}
+}
+
+
+// Hash routing
+const h=window.location.hash;const hParams=new URLSearchParams(h.split('?')[1]);if(hParams.get('store'))currentStore=hParams.get('store');if(h==='#coach'||h.startsWith('#coach?'))goCoachLogin();else if(h==='#parent'||h.startsWith('#parent?'))goParent();
+window.addEventListener('hashchange',()=>{const h2=window.location.hash;if(h2==='#coach')goCoachLogin();else if(h2==='#parent')goParent()});
+
+// QR & Scanner
+let qrScanner=null;
+function showStuQR(id){const s=db.students.find(x=>x.id===id);if(!s)return;const url=window.location.origin+'/#parent?sid='+id+'&store='+currentStore;const ct=document.getElementById('qrCanvas');ct.innerHTML='';const doQR=()=>new QRCode(ct,{text:url,width:180,height:180,colorDark:'#1F2937',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});if(window.QRCode){doQR()}else{const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';sc.onload=doQR;document.head.appendChild(sc)};document.getElementById('qrStuName').textContent=s.name;document.getElementById('qrStuId').textContent=s.id;document.getElementById('moQR').classList.add('on')}
+function downloadStuQR(){const name=document.getElementById('qrStuName').textContent;const canvas=document.querySelector('#qrCanvas canvas'),img=document.querySelector('#qrCanvas img');const link=document.createElement('a');link.download=name+'_二维码.png';if(canvas)link.href=canvas.toDataURL('image/png');else if(img&&img.src)link.href=img.src;else{toast('二维码未生成','no');return}link.click()}
+function closeQRMo(){clsMo('moQR')}
+function openCoachScan(){document.getElementById('scanTitle').textContent='扫码识别学员';document.getElementById('moScan').classList.add('on');startScanner('qrReader',function(sid){pickStu(sid);stopScanner();clsMo('moScan');toast('已识别学员','ok')})}
+function openParentScan(){document.getElementById('scanTitle').textContent='扫码查询课时';document.getElementById('moScan').classList.add('on');startScanner('qrReader',function(sid){stopScanner();clsMo('moScan');const s=db.students.find(x=>x.id===sid);if(s){showPDetail(s);toast('已识别: '+s.name,'ok')}else{toast('未找到该学员','no')}})}
+function loadScanLib(cb){if(window.Html5Qrcode&&window.QRCode){cb();return}const s1=document.createElement('script');s1.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';s1.onload=()=>{const s2=document.createElement('script');s2.src='https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js';s2.onload=cb;document.head.appendChild(s2)};document.head.appendChild(s1)}
+function startScanner(elId,onSuccess){stopScanner();const el=document.getElementById(elId);el.innerHTML='<div style="padding:40px 0;text-align:center;color:var(--g400)"><div style="font-size:24px;margin-bottom:8px">📷</div><div>正在加载扫码组件...</div></div>';loadScanLib(()=>{el.innerHTML='<div style="padding:40px 0;text-align:center;color:var(--g400)"><div style="font-size:24px;margin-bottom:8px">📷</div><div>正在打开摄像头...</div></div>';qrScanner=new Html5Qrcode(elId);qrScanner.start({facingMode:"environment"},{fps:15,qrbox:{width:200,height:200},aspectRatio:1.0},function(text){let sid=text;try{const u=new URL(text);const m=u.hash.match(/sid=([^&]+)/);if(m)sid=m[1]}catch(e){const m=text.match(/sid=([^&]+)/);if(m)sid=m[1]}const s=db.students.find(x=>x.id===sid);if(s)onSuccess(sid);else toast('未找到学员: '+sid,'no')},function(){}).catch(function(err){toast('无法打开相机，请检查权限','no');console.error(err)})})}
+function stopScanner(){if(qrScanner){try{qrScanner.stop()}catch(e){}try{qrScanner.clear()}catch(e){}qrScanner=null}}
+function closeScanMo(){stopScanner();clsMo('moScan')}
+
+(function(){const params=new URLSearchParams(window.location.hash.split('?')[1]),autoSid=params.get('sid'),autoStore=params.get('store');if(autoStore)currentStore=autoStore;if(autoSid&&window.location.hash.includes('#parent')){window.addEventListener('load',function(){setTimeout(function(){loadDB().then(function(){const s=db.students.find(x=>x.id===autoSid);if(s)showPDetail(s)})},500)})}})();
+// Render保活: 浏览器开着时每5分钟静默ping
+setInterval(function(){fetch('/api/ping?store=_keepalive').catch(function(){})},240000);
+// 自动同步: 教练面板每30秒静默刷新数据
+let _autoSync=null;
+function startAutoSync(){if(_autoSync)return;_autoSync=setInterval(function(){if(coach&&currentStore)loadDB().then(function(){renderRecs();renderStuLists()}).catch(function(){})},30000)}
+function stopAutoSync(){if(_autoSync){clearInterval(_autoSync);_autoSync=null}}
+// 切换回页面时立刻刷新
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&coach&&currentStore)refresh()});
+
+// Pull-to-refresh
+let _ptrStartY=0,_ptrActive=false,_ptrLock=false;
+function _ptrTouchStart(e){if(_ptrLock)return;if(window.scrollY<=0)_ptrStartY=e.touches[0].clientY}
+function _ptrTouchMove(e){if(!_ptrStartY||_ptrLock||window.scrollY>0)return;const dy=e.touches[0].clientY-_ptrStartY;if(dy>60){e.preventDefault();document.getElementById('ptrIndicator').classList.add('on')}}
+async function _ptrTouchEnd(){if(!_ptrStartY||_ptrLock){_ptrStartY=0;return}const el=document.getElementById('ptrIndicator');if(el.classList.contains('on')){_ptrLock=true;el.innerHTML='<span class="spinner"></span>刷新中…';try{const pg=document.querySelector('.page.active');if(pg){const id=pg.id;if(id==='pgCoach')await refresh();else if(id==='pgParent'){await loadDB()}else if(id==='pgAdmin')loadAdminPending();else if(id==='pgMgr')await refreshPerf()}}catch(e){console.error(e)}el.innerHTML='✓ 已刷新';el.classList.remove('on');el.classList.add('done');setTimeout(()=>{el.classList.remove('done');el.innerHTML='<span class="spinner"></span>刷新中…';_ptrLock=false},1000)}else{_ptrLock=false}_ptrStartY=0}
+document.addEventListener('touchstart',_ptrTouchStart,{passive:true});
+document.addEventListener('touchmove',_ptrTouchMove,{passive:false});
+document.addEventListener('touchend',_ptrTouchEnd);
+
+</script>
+</body>
+</html>
