@@ -515,7 +515,7 @@ async function deletePerfRec(idx){
 
 
 function goStoreSelect(type){
-  adminLoginType=type;
+  pendingAction=type;
   if(type==='admin'){
     document.getElementById('storeTitle').textContent='选择门店';
     document.getElementById('storeSub').textContent='请选择要管理的门店';
