@@ -643,7 +643,7 @@ function clsMo(id){document.getElementById(id).classList.remove('on');if(id==='m
 
 // ===== Admin Management =====
 const ADMIN_PWD='123456';let adminStore='henglicheng';const ADMIN_STORE_MAP={'henglicheng':'恒力城','taihe':'泰禾'};
-let adminAuth=false,adminCoaches=[],adminEditOldUser=null;
+let adminAuth=false,adminCoaches=[],adminEditOldUser=null,_adminPendingTimer=null;
 
 function goAdminLogin(){go('pgAdminLogin');document.getElementById('adminPwd').value=''}
 function doAdminLogin(){const p=document.getElementById('adminPwd').value;if(p!==ADMIN_PWD){toast('密码错误','no');return}adminAuth=true;const btn=document.querySelector('#pgAdminLogin .btn-p');if(btn){btn.disabled=true;btn.textContent='登录中...'}enterAdmin().finally(()=>{if(btn){btn.disabled=false;btn.textContent='登 录'}})}
