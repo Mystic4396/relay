@@ -801,7 +801,13 @@ async function adminSaveMgr(){
     if(d.error){alert(d.error);return;}
     alert(adminEditOldMgrName?'修改成功':'添加成功');
     clsMo('moMgrEdit');
-    loadAdminMgrs();
+    if(adminEditOldMgrName){
+      const idx=adminMgrs.findIndex(m=>m.name===adminEditOldMgrName);
+      if(idx>=0)adminMgrs[idx]={name,password:password||adminMgrs[idx].password,shares,stores:[adminStore]};
+    }else{
+      adminMgrs.push({name,password,shares,stores:[adminStore]});
+    }
+    renderAdminMgrs(adminMgrs);
   })
   .catch(e=>alert('保存失败'));
 }
@@ -813,7 +819,8 @@ function adminDelMgr(idx){
   .then(d=>{
     if(d.error){alert(d.error);return;}
     alert('删除成功');
-    loadAdminMgrs();
+    adminMgrs.splice(idx,1);
+    renderAdminMgrs(adminMgrs);
   })
   .catch(e=>alert('删除失败'));
 }
