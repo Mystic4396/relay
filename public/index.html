@@ -791,7 +791,7 @@ async function adminSaveMgr(){
   if(shareInput)shares[adminStore]=parseFloat(shareInput)||0;
   if(!name){alert('请输入姓名');return;}
   if(!password&&!adminEditOldMgrName){alert('请输入密码');return;}
-  const body={pwd:adminPwd,name,password:password||'',shares,stores:[adminStore],store:adminStore};
+  const body={pwd:ADMIN_PWD,name,password:password||'',shares,stores:[adminStore],store:adminStore};
   const url='/api/admin/managers';
   const method=adminEditOldMgrName?'PUT':'POST';
   if(adminEditOldMgrName)body.oldName=adminEditOldMgrName;
@@ -808,7 +808,7 @@ async function adminSaveMgr(){
 function adminDelMgr(idx){
   const m=adminMgrs[idx];if(!m)return;
   if(!confirm('确定删除店长「'+m.name+'」？'))return;
-  fetch('/api/admin/managers?pwd='+encodeURIComponent(adminPwd)+'&name='+encodeURIComponent(m.name)+'&store='+adminStore,{method:'DELETE'})
+  fetch('/api/admin/managers?pwd='+encodeURIComponent(ADMIN_PWD)+'&name='+encodeURIComponent(m.name)+'&store='+adminStore,{method:'DELETE'})
   .then(r=>r.json())
   .then(d=>{
     if(d.error){alert(d.error);return;}
