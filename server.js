@@ -428,6 +428,7 @@ const DEFAULT_PERF = {
   partTimeHours: {},
   partTimeRate: 20,
   perfRecords: [],
+  expenses: [],
   shoeCost: { junior: 195, senior: 750 },
   managerRate: 0.3,
   fixedCost: 5500,
@@ -571,6 +572,7 @@ app.put('/api/perf', async (req, res) => {
     if (u.monthlyConfig) perf.monthlyConfig = u.monthlyConfig;
     if (u.monthlyReports) perf.monthlyReports = u.monthlyReports;
     if (u.prospectMemos) perf.prospectMemos = u.prospectMemos;
+    if (u.expenses) perf.expenses = u.expenses;
     const ok = await writePerfData(perf, store);
     ok ? res.json({ ok: true }) : res.status(500).json({ error: '保存失败' });
   } catch(e) {
