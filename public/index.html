@@ -653,7 +653,7 @@ function clsMo(id){document.getElementById(id).classList.remove('on');if(id==='m
 
 // ===== Admin Management =====
 const ADMIN_PWD='123456';let adminStore='henglicheng';const ADMIN_STORE_MAP={'henglicheng':'恒力城','taihe':'泰禾'};
-let adminAuth=false,adminCoaches=[],adminEditOldUser=null,_adminPendingTimer=null;
+let adminAuth=false,adminCoaches=[],adminEditOldUser=null,_adminPendingTimer=null,adminPendingList=[];
 
 function goAdminLogin(){go('pgAdminLogin');document.getElementById('adminPwd').value=''}
 function doAdminLogin(){const p=document.getElementById('adminPwd').value;if(p!==ADMIN_PWD){toast('密码错误','no');return}adminAuth=true;const btn=document.querySelector('#pgAdminLogin .btn-p');if(btn){btn.disabled=true;btn.textContent='登录中...'}enterAdmin().finally(()=>{if(btn){btn.disabled=false;btn.textContent='登 录'}})}
@@ -673,6 +673,7 @@ async function enterAdmin(){
     renderAdminCoaches(coaches);
     renderAdminMgrs(mgrs);
     renderAdminRecs(recs);
+    adminPendingList=pending;
     renderAdminPending(pending);
   }catch(e){toast('加载失败','no');console.error(e)}
   startAdminAutoRefresh();
@@ -836,7 +837,7 @@ function adminDelMgr(idx){
 
 function loadAdminCoaches(){fetch('/api/admin/coaches?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json()).then(d=>{adminCoaches=d;renderAdminCoaches(d)}).catch(()=>toast('加载失败','no'))}
 function loadAdminMgrs(){fetch('/api/admin/managers?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json()).then(d=>{renderAdminMgrs(d)}).catch(()=>toast('加载失败','no'))}
-function loadAdminPending(){fetch('/api/admin/pending?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json()).then(d=>renderAdminPending(d)).catch(()=>toast('加载失败','no'))}
+function loadAdminPending(){fetch('/api/admin/pending?pwd='+ADMIN_PWD+'&store='+adminStore).then(r=>r.json()).then(d=>{adminPendingList=d;renderAdminPending(d)}).catch(()=>toast('加载失败','no'))}
 function loadAdminRecs(){fetch('/api/admin/records?pwd='+ADMIN_PWD).then(r=>r.json()).then(d=>renderAdminRecs(d)).catch(()=>toast('加载失败','no'))}
 
 function renderAdminPending(items){
@@ -853,23 +854,26 @@ function renderAdminPending(items){
   }).join('');
 }
 async function approvePending(id){
-  const btn=event.target;const origText=btn.textContent;btn.disabled=true;btn.textContent='处理中…';btn.style.opacity='0.6';
+  // 立即从本地移除并刷新UI
+  const idx=adminPendingList.findIndex(p=>p.id===id);
+  if(idx>=0){adminPendingList.splice(idx,1);renderAdminPending(adminPendingList)}
   try{
     const r=await fetch('/api/admin/pending/'+id+'/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:ADMIN_PWD,store:adminStore})});
-    if(!r.ok){const e=await r.json().catch(()=>({error:'审批失败'}));toast(e.error||'审批失败','no');btn.disabled=false;btn.textContent=origText;btn.style.opacity='1';return}
+    if(!r.ok){const e=await r.json().catch(()=>({error:'审批失败'}));toast(e.error||'审批失败','no');loadAdminPending();return}
     const result=await r.json().catch(()=>({}));
-    toast(result.warn||'已通过','ok');
-  }catch(e){toast('审批失败','no');btn.disabled=false;btn.textContent=origText;btn.style.opacity='1';return}
-  loadAdminPending();loadAdminRecs();
+    if(result.warn)toast(result.warn,'ok');
+    loadAdminRecs();
+  }catch(e){toast('审批失败','no');loadAdminPending()}
 }
 async function rejectPending(id){
-  if(!confirm('确定拒绝此申请？'))return;const btn=event.target;const origText=btn.textContent;btn.disabled=true;btn.textContent='处理中…';btn.style.opacity='0.6';
+  if(!confirm('确定拒绝此申请？'))return;
+  const idx=adminPendingList.findIndex(p=>p.id===id);
+  if(idx>=0){adminPendingList.splice(idx,1);renderAdminPending(adminPendingList)}
   try{
     const r=await fetch('/api/admin/pending/'+id+'/reject',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:ADMIN_PWD,store:adminStore})});
-    if(!r.ok){toast('拒绝失败','no');btn.disabled=false;btn.textContent=origText;btn.style.opacity='1';return}
+    if(!r.ok){toast('拒绝失败','no');loadAdminPending();return}
     toast('已拒绝','ok');
-  }catch(e){toast('拒绝失败','no');btn.disabled=false;btn.textContent=origText;btn.style.opacity='1';return}
-  loadAdminPending();
+  }catch(e){toast('拒绝失败','no');loadAdminPending()}
 }
 
 function renderAdminRecs(recs){
