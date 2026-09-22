@@ -854,26 +854,49 @@ function renderAdminPending(items){
   }).join('');
 }
 async function approvePending(id){
-  // 立即从本地移除并刷新UI
   const idx=adminPendingList.findIndex(p=>p.id===id);
+  const item=idx>=0?adminPendingList[idx]:null;
+  // 立即从本地移除并刷新UI
   if(idx>=0){adminPendingList.splice(idx,1);renderAdminPending(adminPendingList)}
   try{
     const r=await fetch('/api/admin/pending/'+id+'/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:ADMIN_PWD,store:adminStore})});
-    if(!r.ok){const e=await r.json().catch(()=>({error:'审批失败'}));toast(e.error||'审批失败','no');loadAdminPending();return}
+    if(!r.ok){
+      const e=await r.json().catch(()=>({error:'审批失败'}));
+      const msg=e.error||'审批失败';
+      toast(msg,'no');
+      // 失败了把记录插回原位置
+      if(item){adminPendingList.splice(idx,0,item);renderAdminPending(adminPendingList)}
+      else loadAdminPending();
+      return;
+    }
     const result=await r.json().catch(()=>({}));
     if(result.warn)toast(result.warn,'ok');
     loadAdminRecs();
-  }catch(e){toast('审批失败','no');loadAdminPending()}
+  }catch(e){
+    toast('审批失败','no');
+    if(item){adminPendingList.splice(idx,0,item);renderAdminPending(adminPendingList)}
+    else loadAdminPending();
+  }
 }
 async function rejectPending(id){
   if(!confirm('确定拒绝此申请？'))return;
   const idx=adminPendingList.findIndex(p=>p.id===id);
+  const item=idx>=0?adminPendingList[idx]:null;
   if(idx>=0){adminPendingList.splice(idx,1);renderAdminPending(adminPendingList)}
   try{
     const r=await fetch('/api/admin/pending/'+id+'/reject',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:ADMIN_PWD,store:adminStore})});
-    if(!r.ok){toast('拒绝失败','no');loadAdminPending();return}
+    if(!r.ok){
+      toast('拒绝失败','no');
+      if(item){adminPendingList.splice(idx,0,item);renderAdminPending(adminPendingList)}
+      else loadAdminPending();
+      return;
+    }
     toast('已拒绝','ok');
-  }catch(e){toast('拒绝失败','no');loadAdminPending()}
+  }catch(e){
+    toast('拒绝失败','no');
+    if(item){adminPendingList.splice(idx,0,item);renderAdminPending(adminPendingList)}
+    else loadAdminPending();
+  }
 }
 
 function renderAdminRecs(recs){
