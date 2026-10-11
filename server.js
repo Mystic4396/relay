@@ -783,8 +783,23 @@ async function readPending(store) {
   return [];
 }
 
+function cleanupOldPending(pending) {
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+  return pending.filter(p => {
+    // pending 状态的永远保留
+    if (p.status === 'pending') return true;
+    // 已处理的用 reviewTime 判断，没有 reviewTime 就用 time
+    const tStr = p.reviewTime || p.time;
+    if (!tStr) return true;
+    const t = new Date(tStr.replace(/\//g, '-'));
+    return t > threeMonthsAgo;
+  });
+}
+
 async function writePending(store, data) {
-  return await _rawWrite(getPendingKey(store), data);
+  const cleaned = cleanupOldPending(data);
+  return await _rawWrite(getPendingKey(store), cleaned);
 }
 
 // Coach: Submit pending request
